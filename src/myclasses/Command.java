@@ -14,13 +14,11 @@ public class Command {
         if (users.get(contor).isFavorite(title)) {
             message = "error -> " + title + " is already in favourite list";
             return message;
-        }
-        else {
+        } else {
             if (!users.get(contor).wasWatched(title)) {
                 message = "error -> " + title + " is not seen";
                 return message;
-            }
-            else {
+            } else {
                 message = "success -> " + title + " was added as favourite";
                 int isMovie = 0, isSerial = 0;
                 for (int i = 0; i < movies.size(); i++) {
@@ -76,7 +74,8 @@ public class Command {
                 show = serials.get(j);
             }
         }
-        int nr = users.get(contor).view(title, show); // Am vizionat o data/inca o data si am salvat in "nr" numarul de vizionari
+        // Am vizionat o data/inca o data si am salvat in "nr" numarul de vizionari
+        int nr = users.get(contor).view(title, show);
         message = "success -> " + title + " was viewed with total views of " + nr;
 
         return message;
@@ -103,9 +102,7 @@ public class Command {
                 if (!users.get(contor).wasWatched(title)) {
                     message = "error -> " + title + " is not seen";
                     return message;
-                }
-
-                else {
+                } else {
                     users.get(contor).rateMovie(grade, movies.get(j));    //Am dat o nota filmului
                     message = "success -> " + title + " was rated with " + grade + " by " + name;
                     return message;
@@ -117,8 +114,7 @@ public class Command {
                 if (!users.get(contor).wasWatched(title)) {
                     message = "error -> " + title + " is not seen";
                     return  message;
-                }
-                else {
+                } else {
                     int seasonNo = seasonNumber;
                     users.get(contor).rateSerial(grade, seasonNo, serials.get(j));
                     message = "success -> " + title + " was rated with " + grade + " by " + name;

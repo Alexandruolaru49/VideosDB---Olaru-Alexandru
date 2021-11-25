@@ -66,8 +66,20 @@ public class MySerialInput extends MyShowInput {
         }
         sumAllseasons = sumAllseasons / numberOfSeasons;
         rating = sumAllseasons;
-
         return rating;
+
+//        Double sumAllseasons = 0d;
+//        Double sumPerSeason = 0d;
+//        for (Season season : seasons) {
+//            if (season.getRatings().size() != 0) {
+//               for(Double rating : season.getRatings()) {
+//                   sumPerSeason = sumPerSeason + rating / season.getRatings().size();
+//               }
+//               sumAllseasons = sumAllseasons + sumPerSeason / numberOfSeasons;
+//            }
+//        }
+//        rating = sumAllseasons;
+//        return rating;
     }
 
     @Override

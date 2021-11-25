@@ -48,6 +48,20 @@ public abstract class MyShowInput {
         }
     }
 
+    public boolean hasGenre(String genre) {
+        int ok = 0;
+        for (String i : genres) {
+            if (i.equals(genre)) {
+                ok = 1;
+            }
+        }
+        if (ok == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getTitle() {
         return title;
     }

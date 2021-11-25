@@ -154,47 +154,46 @@ public final class Main {
                     ArrayList<MyMovie> movieList = new ArrayList<MyMovie>();
                     QueryMovies queryMovies = new QueryMovies();
 
-                    queryMovies.InitializeMovieList(genre, year, movies, movieList);
+                    queryMovies.initializeMovies(genre, year, movies, movieList);
 
                     if (movieList.size() == 0) {
                         message = "Query result: []";
-                    }
-                    else {
+                    } else {
                         if (sortType.equals("asc")) {
 
                             if (criteria.equals("ratings")) {
-                                message = queryMovies.AscSortByRating(movieList, number);
+                                message = queryMovies.ascRating(movieList, number);
                             }
 
                             if (criteria.equals("longest")) {
-                                message = queryMovies.AscSortByLongest(movieList, number);
+                                message = queryMovies.ascLongest(movieList, number);
                             }
 
                             if (criteria.equals("favorite")) {
-                                message = queryMovies.AscSortByFavorite(movieList, number);
+                                message = queryMovies.ascFavorite(movieList, number);
                             }
 
                             if (criteria.equals("most_viewed")) {
-                                message = queryMovies.AscSortByViews(movieList, number);
+                                message = queryMovies.ascViews(movieList, number);
                             }
                         }
 
                             if (sortType.equals("desc")) {
 
                                 if (criteria.equals("ratings")) {
-                                    message = queryMovies.DescSortByRating(movieList, number);
+                                    message = queryMovies.descRating(movieList, number);
                                 }
 
                                 if (criteria.equals("longest")) {
-                                    message = queryMovies.DescSortByLongest(movieList, number);
+                                    message = queryMovies.descLongest(movieList, number);
                                 }
 
                                 if (criteria.equals("favorite")) {
-                                    message = queryMovies.DescSortByFavorite(movieList, number);
+                                    message = queryMovies.descFavorite(movieList, number);
                                 }
 
                                 if (criteria.equals("most_viewed")) {
-                                    message = queryMovies.DescSortByViews(movieList, number);
+                                    message = queryMovies.descViews(movieList, number);
                                 }
                             }
                     }
@@ -205,49 +204,47 @@ public final class Main {
                     ArrayList<MySerialInput> showList = new ArrayList<MySerialInput>();
                     QueryShows queryShows = new QueryShows();
 
-                    queryShows.InitializeShowList(genre, year, serials, showList);
+                    queryShows.initializeShows(genre, year, serials, showList);
 
                     if (showList.size() == 0) {
                         message = "Query result: []";
-                    }
-                    else {
+                    } else {
                         if (sortType.equals("asc")) {
 
                             if (criteria.equals("ratings")) {
-                                message = queryShows.AscSortByRating(showList, number);
+                                message = queryShows.ascRating(showList, number);
                             }
 
                             if (criteria.equals("longest")) {
-                                message = queryShows.AscSortByLongest(showList, number);
+                                message = queryShows.ascLongest(showList, number);
                             }
 
                             if (criteria.equals("favorite")) {
-                                message = queryShows.AscSortByFavorite(showList, number);
+                                message = queryShows.ascFavorite(showList, number);
                             }
 
                             if (criteria.equals("most_viewed")) {
-                                message = queryShows.AscSortByViews(showList, number);
+                                message = queryShows.ascViews(showList, number);
                             }
                         }
 
                         if (sortType.equals("desc")) {
 
                             if (criteria.equals("ratings")) {
-                                message = queryShows.DescSortByRating(showList, number);
+                                message = queryShows.descRating(showList, number);
                             }
 
                             if (criteria.equals("longest")) {
-                                message = queryShows.DescSortByLongest(showList, number);
+                                message = queryShows.descLongest(showList, number);
                             }
 
                             if (criteria.equals("favorite")) {
-                                message = queryShows.DescSortByFavorite(showList, number);
+                                message = queryShows.descFavorite(showList, number);
                             }
 
                             if (criteria.equals("most_viewed")) {
-                                message = queryShows.DescSortByViews(showList, number);
+                                message = queryShows.descViews(showList, number);
                             }
-
                         }
                     }
                 }
@@ -261,8 +258,7 @@ public final class Main {
 
                     if (userList.size() == 0) {
                         message = "Query result: []";
-                    }
-                    else {
+                    } else {
                         if (sortType.equals("asc")) {
                             message = queryUsers.AscSortByRatingsGiven(userList, number);
 
@@ -280,41 +276,40 @@ public final class Main {
                     ArrayList<MyActor> actorList = new ArrayList<MyActor>();
                     QueryActors queryActors = new QueryActors();
 
-                    queryActors.InitializeActorsList(actors, actorList);
+                    queryActors.initializeActors(actors, actorList);
 
                     if (actorList.size() == 0) {
                         message = "Query result: []";
-                    }
-                    else {
+                    } else {
                         if (sortType.equals("asc")) {
 
                             if (criteria.equals("average")) {
-                                message = queryActors.AscSortByAverage(actorList, number,
+                                message = queryActors.ascAverage(actorList, number,
                                         movies, serials);
                             }
 
                             if (criteria.equals("awards")) {
-                                message = queryActors.AscSortByAwards(actors, awards);
+                                message = queryActors.ascAwards(actors, awards);
                             }
 
                             if (criteria.equals("filter_description")) {
-                                message = queryActors.AscSortByDescription(actors, words);
+                                message = queryActors.ascDescription(actors, words);
                             }
                         }
 
                         if (sortType.equals("desc")) {
 
                             if (criteria.equals("average")) {
-                                message = queryActors.DescSortByAverage(actorList, number,
+                                message = queryActors.descAverage(actorList, number,
                                         movies, serials);
                             }
 
                             if (criteria.equals("awards")) {
-                                message = queryActors.DescSortByAwards(actors, awards);
+                                message = queryActors.descAwards(actors, awards);
                             }
 
                             if (criteria.equals("filter_description")) {
-                                message = queryActors.DescSortByDescription(actors, words);
+                                message = queryActors.descDescription(actors, words);
                             }
                         }
 
@@ -323,6 +318,8 @@ public final class Main {
             }
 
             if (i.getActionType().equals("recommendation")) {
+
+                String genre = i.getGenre();
 
                 String username = i.getUsername();
                 Recommendation recommendation = new Recommendation();
@@ -335,7 +332,17 @@ public final class Main {
                     message = recommendation.BestUnseen(users, username, movies, serials);
                 }
 
+                if(i.getType().equals("search")) {
+                    message = recommendation.recommendationSearch(users, genre, username, movies, serials);
+                }
 
+                if(i.getType().equals("favorite")) {
+                    message = recommendation.recommendationFavorite(users, username, movies, serials);
+                }
+
+                if(i.getType().equals("popular")) {
+                    message = recommendation.Popular(users, username, movies, serials);
+                }
 
             }
 

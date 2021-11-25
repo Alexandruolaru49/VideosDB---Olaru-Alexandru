@@ -21,23 +21,31 @@ public class QueryUsers {
         MyUser aux;
         StringBuilder message;
 
-        Collections.sort(userList, new Comparator<MyUser>() {
-            public int compare(MyUser v1, MyUser v2) {
+
+        userList.sort((v1, v2) -> {
+            if (v1.ratingsGiven == v2.ratingsGiven) {
                 return v1.getUsername().compareTo(v2.getUsername());
+            } else {
+                return Integer.compare(v1.ratingsGiven, v2.ratingsGiven);
             }
         });
+//        Collections.sort(userList, new Comparator<MyUser>() {
+//            public int compare(MyUser v1, MyUser v2) {
+//                return v1.getUsername().compareTo(v2.getUsername());
+//            }
+//        });
+//
+//        Collections.sort(userList, Comparator.comparing(MyUser::getUsername));
 
-        Collections.sort(userList, Comparator.comparing(MyUser::getUsername));
-
-        for (j = 0; j < userList.size() - 1; j++) {
-            for (k = j + 1; k < userList.size(); k++) {
-                if (userList.get(j).ratingsGiven > userList.get(k).ratingsGiven) {
-                    aux = new MyUser(userList.get(j));
-                    userList.set(j, userList.get(k));
-                    userList.set(k, aux);
-                }
-            }
-        }
+//        for (j = 0; j < userList.size() - 1; j++) {
+//            for (k = j + 1; k < userList.size(); k++) {
+//                if (userList.get(j).ratingsGiven > userList.get(k).ratingsGiven) {
+//                    aux = new MyUser(userList.get(j));
+//                    userList.set(j, userList.get(k));
+//                    userList.set(k, aux);
+//                }
+//            }
+//        }
 
         message = new StringBuilder("Query result: [");
         j = 0;
@@ -65,24 +73,32 @@ public class QueryUsers {
         MyUser aux;
         StringBuilder message;
 
-        Collections.sort(userList, new Comparator<MyUser>() {
-            public int compare(MyUser v1, MyUser v2) {
-                return v1.getUsername().compareTo(v2.getUsername());
+        userList.sort((v1, v2) -> {
+            if (v1.ratingsGiven == v2.ratingsGiven) {
+                return v2.getUsername().compareTo(v1.getUsername());
+            } else {
+                return Integer.compare(v2.ratingsGiven, v1.ratingsGiven);
             }
         });
 
-        Collections.sort(userList, Comparator.comparing(MyUser::getUsername));
-        Collections.reverse(userList);
+//        Collections.sort(userList, new Comparator<MyUser>() {
+//            public int compare(MyUser v1, MyUser v2) {
+//                return v1.getUsername().compareTo(v2.getUsername());
+//            }
+//        });
+//
+//        Collections.sort(userList, Comparator.comparing(MyUser::getUsername));
+//        Collections.reverse(userList);
 
-        for (j = 0; j < userList.size() - 1; j++) {
-            for (k = j + 1; k < userList.size(); k++) {
-                if (userList.get(j).ratingsGiven < userList.get(k).ratingsGiven) {
-                    aux = new MyUser(userList.get(j));
-                    userList.set(j, userList.get(k));
-                    userList.set(k, aux);
-                }
-            }
-        }
+//        for (j = 0; j < userList.size() - 1; j++) {
+//            for (k = j + 1; k < userList.size(); k++) {
+//                if (userList.get(j).ratingsGiven < userList.get(k).ratingsGiven) {
+//                    aux = new MyUser(userList.get(j));
+//                    userList.set(j, userList.get(k));
+//                    userList.set(k, aux);
+//                }
+//            }
+//        }
 
         message = new StringBuilder("Query result: [");
         j = 0;

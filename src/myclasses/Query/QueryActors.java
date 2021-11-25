@@ -12,14 +12,14 @@ import java.util.List;
 
 public class QueryActors {
 
-    public void InitializeActorsList(final ArrayList<MyActor> actors,
+    public void initializeActors(final ArrayList<MyActor> actors,
                                      final ArrayList<MyActor> actorList) {
         for (MyActor j : actors) {
             actorList.add(j);
         }
     }
 
-    public String AscSortByAverage(final ArrayList<MyActor> actorList,
+    public String ascAverage(final ArrayList<MyActor> actorList,
                                    final int number,
                                    final ArrayList<MyMovie> movies,
                                    final ArrayList<MySerialInput> serials) {
@@ -27,6 +27,14 @@ public class QueryActors {
         MyActor aux;
         StringBuilder message;
         int count = number;
+
+//        actorList.sort((v1, v2) -> {
+//            if (v1.getActorAverage(movies, serials) == v2.getActorAverage(movies, serials)) {
+//                return v1.getName().compareTo(v2.getName());
+//            } else {
+//                return Double.compare(v1.getActorAverage(movies, serials), v2.getActorAverage(movies, serials));
+//            }
+//        });
 
         Collections.sort(actorList, new Comparator<MyActor>() {
             public int compare(final MyActor v1, final MyActor v2) {
@@ -56,8 +64,7 @@ public class QueryActors {
                 }
                 j++;
                 count--;
-            }
-            else {
+            } else {
                 j++;
             }
         }
@@ -68,7 +75,7 @@ public class QueryActors {
     }
 
 
-    public String DescSortByAverage(final ArrayList<MyActor> actorList,
+    public String descAverage(final ArrayList<MyActor> actorList,
                                     final int number,
                                     final ArrayList<MyMovie> movies,
                                     final ArrayList<MySerialInput> serials) {
@@ -76,6 +83,14 @@ public class QueryActors {
         MyActor aux;
         StringBuilder message;
         int count = number;
+
+//        actorList.sort((v1, v2) -> {
+//            if (v1.getActorAverage(movies, serials) == v2.getActorAverage(movies, serials)) {
+//                return v2.getName().compareTo(v1.getName());
+//            } else {
+//                return Double.compare(v2.getActorAverage(movies, serials), v1.getActorAverage(movies, serials));
+//            }
+//        });
 
         Collections.sort(actorList, new Comparator<MyActor>() {
             public int compare(final MyActor v1, final MyActor v2) {
@@ -107,8 +122,7 @@ public class QueryActors {
                 }
                 j++;
                 count--;
-            }
-            else {
+            } else {
                 j++;
             }
         }
@@ -119,7 +133,7 @@ public class QueryActors {
     }
 
 
-    public String AscSortByAwards(final ArrayList<MyActor> actors,
+    public String ascAwards(final ArrayList<MyActor> actors,
                                   final List<String> awards) {
 
         int j, k;
@@ -138,23 +152,31 @@ public class QueryActors {
             return message.toString();
         }
 
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
+        actorList.sort((v1, v2) -> {
+            if (v1.getAwardsNumber() == v2.getAwardsNumber()) {
                 return v1.getName().compareTo(v2.getName());
+            } else {
+                return Integer.compare(v1.getAwardsNumber(), v2.getAwardsNumber());
             }
         });
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-
-        for (j = 0; j < actorList.size() - 1; j++) {
-            for (k = j + 1; k < actorList.size(); k++) {
-                if ((actorList.get(j).getAwardsNumber()) > (actorList.get(k).getAwardsNumber())) {
-                    aux = new MyActor(actorList.get(j));
-                    actorList.set(j, actorList.get(k));
-                    actorList.set(k, aux);
-                }
-            }
-        }
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//
+//        for (j = 0; j < actorList.size() - 1; j++) {
+//            for (k = j + 1; k < actorList.size(); k++) {
+//                if ((actorList.get(j).getAwardsNumber()) > (actorList.get(k).getAwardsNumber())) {
+//                    aux = new MyActor(actorList.get(j));
+//                    actorList.set(j, actorList.get(k));
+//                    actorList.set(k, aux);
+//                }
+//            }
+//        }
 
         message = new StringBuilder("Query result: [");
         for (int i = 0; i < actorList.size(); i++) {
@@ -170,7 +192,7 @@ public class QueryActors {
     }
 
 
-    public String DescSortByAwards(final ArrayList<MyActor> actors,
+    public String descAwards(final ArrayList<MyActor> actors,
                                    final List<String> awards) {
 
         int j, k;
@@ -189,24 +211,32 @@ public class QueryActors {
             return message.toString();
         }
 
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
-                return v1.getName().compareTo(v2.getName());
+        actorList.sort((v1, v2) -> {
+            if (v1.getAwardsNumber() == v2.getAwardsNumber()) {
+                return v2.getName().compareTo(v1.getName());
+            } else {
+                return Integer.compare(v2.getAwardsNumber(), v1.getAwardsNumber());
             }
         });
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-        Collections.reverse(actorList);
-
-        for (j = 0; j < actorList.size() - 1; j++) {
-            for (k = j + 1; k < actorList.size(); k++) {
-                if ((actorList.get(j).getAwardsNumber()) < (actorList.get(k).getAwardsNumber())) {
-                    aux = new MyActor(actorList.get(j));
-                    actorList.set(j, actorList.get(k));
-                    actorList.set(k, aux);
-                }
-            }
-        }
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//        Collections.reverse(actorList);
+//
+//        for (j = 0; j < actorList.size() - 1; j++) {
+//            for (k = j + 1; k < actorList.size(); k++) {
+//                if ((actorList.get(j).getAwardsNumber()) < (actorList.get(k).getAwardsNumber())) {
+//                    aux = new MyActor(actorList.get(j));
+//                    actorList.set(j, actorList.get(k));
+//                    actorList.set(k, aux);
+//                }
+//            }
+//        }
 
         message = new StringBuilder("Query result: [");
         for (int i = 0; i < actorList.size(); i++) {
@@ -222,7 +252,7 @@ public class QueryActors {
     }
 
 
-    public String AscSortByDescription(final ArrayList<MyActor> actors,
+    public String ascDescription(final ArrayList<MyActor> actors,
                                        final List<String> words) {
 
         int j, k;
@@ -263,7 +293,7 @@ public class QueryActors {
 
     }
 
-    public String DescSortByDescription(final ArrayList<MyActor> actors,
+    public String descDescription(final ArrayList<MyActor> actors,
                                         final List<String> words) {
 
         int j, k;
@@ -277,7 +307,7 @@ public class QueryActors {
             }
         }
 
-        if(actorList.size() == 0) {
+        if (actorList.size() == 0) {
             message = new StringBuilder("Query result: []");
             return message.toString();
         }

@@ -4,7 +4,7 @@ import fileio.MovieInputData;
 
 import java.util.ArrayList;
 
-public class MyMovie extends  MyShowInput{
+public class MyMovie extends MyShowInput {
 
     public int duration;
     public ArrayList<Double> ratings = new ArrayList<>();
