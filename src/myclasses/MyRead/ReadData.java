@@ -5,10 +5,10 @@ import fileio.ActorInputData;
 import fileio.MovieInputData;
 import fileio.SerialInputData;
 import fileio.UserInputData;
-import myclasses.MyMovie;
-import myclasses.MySerialInput;
-import myclasses.MyActor;
-import myclasses.MyUser;
+import myclasses.CopyClasses.MyMovie;
+import myclasses.CopyClasses.MySerialInput;
+import myclasses.CopyClasses.MyActor;
+import myclasses.CopyClasses.MyUser;
 import java.util.ArrayList;
 
 public class ReadData {

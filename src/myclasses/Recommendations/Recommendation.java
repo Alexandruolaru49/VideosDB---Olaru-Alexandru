@@ -1,9 +1,9 @@
 package myclasses.Recommendations;
 
-import myclasses.MyUser;
-import myclasses.MyShowInput;
-import myclasses.MySerialInput;
-import myclasses.MyMovie;
+import myclasses.CopyClasses.MyUser;
+import myclasses.CopyClasses.MyShowInput;
+import myclasses.CopyClasses.MySerialInput;
+import myclasses.CopyClasses.MyMovie;
 
 import java.util.ArrayList;
 import java.util.Collections;

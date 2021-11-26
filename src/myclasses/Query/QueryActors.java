@@ -1,8 +1,8 @@
 package myclasses.Query;
 
-import myclasses.MyActor;
-import myclasses.MyMovie;
-import myclasses.MySerialInput;
+import myclasses.CopyClasses.MyActor;
+import myclasses.CopyClasses.MyMovie;
+import myclasses.CopyClasses.MySerialInput;
 import java.util.ArrayList;
 import java.util.List;
 

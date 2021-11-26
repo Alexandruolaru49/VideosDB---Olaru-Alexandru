@@ -1,6 +1,6 @@
 package myclasses.Query;
 
-import myclasses.MyUser;
+import myclasses.CopyClasses.MyUser;
 import java.util.ArrayList;
 
 public class QueryUsers {

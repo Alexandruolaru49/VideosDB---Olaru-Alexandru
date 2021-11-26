@@ -1,6 +1,6 @@
 package myclasses.Query;
 
-import myclasses.MyMovie;
+import myclasses.CopyClasses.MyMovie;
 import java.util.ArrayList;
 import java.util.List;
 

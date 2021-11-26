@@ -1,4 +1,4 @@
-package myclasses;
+package myclasses.CopyClasses;
 
 import actor.ActorsAwards;
 import fileio.ActorInputData;

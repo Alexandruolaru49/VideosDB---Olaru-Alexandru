@@ -1,9 +1,8 @@
 package myclasses.Commands;
-import myclasses.MyMovie;
-import myclasses.MySerialInput;
-import myclasses.MyUser;
-import myclasses.MyShowInput;
-
+import myclasses.CopyClasses.MyMovie;
+import myclasses.CopyClasses.MySerialInput;
+import myclasses.CopyClasses.MyUser;
+import myclasses.CopyClasses.MyShowInput;
 import java.util.ArrayList;
 
 

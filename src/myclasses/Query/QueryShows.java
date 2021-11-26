@@ -1,6 +1,6 @@
 package myclasses.Query;
 
-import myclasses.MySerialInput;
+import myclasses.CopyClasses.MySerialInput;
 import java.util.ArrayList;
 import java.util.List;
 
