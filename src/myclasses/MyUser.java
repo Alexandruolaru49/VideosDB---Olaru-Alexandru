@@ -111,7 +111,7 @@ public class MyUser {
                            final MySerialInput serial) {
 
         int i;
-        //ratedVideos.add(serial.title);
+        ratedVideos.add(serial.title + seasonNo);
         serial.seasons.get(seasonNo - 1).getRatings().add(grade);
         // DUPA ADAUGAREA UNEI NOTE PENTRU UN SEZON, MODIFIC RATINGUL SERIALULUI
 

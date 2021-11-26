@@ -9,14 +9,43 @@ import java.util.List;
 
 public class QueryMovies {
 
-    public void initializeMovies(final List<String> genre,
-                                    final List<String> year,
-                                    final ArrayList<MyMovie> movies,
-                                    final ArrayList<MyMovie> movieList) {
+    public ArrayList<MyMovie> initializeMovies(final List<String> genre,
+                                               final List<String> year,
+                                               final ArrayList<MyMovie> movies) {
+
+
+//        if(year == null) {
+//            System.out.println("year: null");
+//        } else {
+//            System.out.println("year: " + year.get(0));
+//        }
+//
+//        if(genre == null) {
+//            System.out.println("genre: null\n");
+//        } else {
+//            for(String m : genre) {
+//                System.out.print("genres: " + m);
+//            }
+//            System.out.println("\n");
+//        }
+
+        ArrayList<MyMovie> movieList = new ArrayList<MyMovie>();
+
+//        System.out.println(year + " " +year.size());
+//        System.out.println(genre + " " + genre.size());
+
 
         int j, k, ok;
+
+        if((genre.get(0) == null) && (year.get(0) == null)) {
+            System.out.println("Am intrat pe genre si year == null");
+            for (j = 0; j < movies.size(); j++) {
+                movieList.add(movies.get(j));
+            }
+        }
+
         // DACA GENRE SI YEAR SUNT DIFERITE DE NULL
-        if ((genre.size() > 0) && (year.size() > 0)) {
+        if ((genre.get(0) != null) && (year.get(0) != null)) {
             for (j = 0; j < movies.size(); j++) {
                 ok = 0;
                 if (String.valueOf(movies.get(j).year).equals(year.get(0))) {
@@ -32,28 +61,40 @@ public class QueryMovies {
             }
         }
 
-        if ((genre.size() == 0) && (year.size() > 0)) {
-            for (j = 0; j < movies.size(); j++) {
-                if (String.valueOf(movies.get(j).year).equals(year.get(0))) {
-                    movieList.add(movies.get(j));
-                }
-            }
-        }
-
-        if ((genre.size() > 0) && (year.size() == 0)) {
-            for (j = 0; j < movies.size(); j++) {
-                ok = 0;
-
-                for (k = 0; k < movies.get(j).getGenres().size(); k++) {
-                    if (movies.get(j).getGenres().get(k).equals(genre.get(0))) {
-                        ok = 1;
+            if ((genre.get(0) == null) && (year.get(0) != null)) {
+                System.out.println("Am intrat pe genre == null si year != null");
+                for (j = 0; j < movies.size(); j++) {
+                    if (String.valueOf(movies.get(j).year).equals(year.get(0))) {
+                        movieList.add(movies.get(j));
                     }
                 }
-                if (ok == 1) {
-                    movieList.add(movies.get(j));
-                }
             }
-        }
+
+                if ((genre.get(0) != null) && (year.get(0) == null)) {
+                    for (j = 0; j < movies.size(); j++) {
+                        ok = 0;
+
+                        for (k = 0; k < movies.get(j).getGenres().size(); k++) {
+                            if (movies.get(j).getGenres().get(k).equals(genre.get(0))) {
+                                ok = 1;
+                            }
+                        }
+                        if (ok == 1) {
+                            movieList.add(movies.get(j));
+                        }
+                    }
+                }
+
+
+
+
+
+//        for(MyMovie l : movieList) {
+//            System.out.print(l.getTitle() + " ");
+//        }
+//        System.out.println("\n");
+
+        return movieList;
     }
 
     public String ascRating(final ArrayList<MyMovie> movieList, final int number) {
@@ -142,7 +183,7 @@ public class QueryMovies {
 
         message = new StringBuilder("Query result: [");
         for (j = 0; j < movieList.size(); j++) {
-            if (j == (number - 1)) {
+            if (j == (number)) { ///!!!!
                 break;
             }
             message.append(movieList.get(j).title);
@@ -292,12 +333,20 @@ public class QueryMovies {
 //                }
 //            }
 //        }
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < movieList.size(); end++) {
+            if(movieList.get(end).ratingMovie == 0d) {
+                break;
+            }
+        }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < movieList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (movieList.get(j).ratingMovie != 0d) {
                 message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -365,39 +414,47 @@ public class QueryMovies {
         StringBuilder message;
         int count = number;
 
-//        movieList.sort((v1, v2) -> {
-//            if (v1.noFavorite == v2.noFavorite) {
-//                return v2.getTitle().compareTo(v1.getTitle());
-//            } else {
-//                return Integer.compare(v2.noFavorite, v1.noFavorite);
-//            }
-//        });
-
-
-        Collections.sort(movieList, new Comparator<MyMovie>() {
-            public int compare(final MyMovie v1, final MyMovie v2) {
-                return v1.getTitle().compareTo(v2.getTitle());
+        movieList.sort((v1, v2) -> {
+            if (v1.noFavorite == v2.noFavorite) {
+                return v2.getTitle().compareTo(v1.getTitle());
+            } else {
+                return Integer.compare(v2.noFavorite, v1.noFavorite);
             }
         });
 
-        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-        Collections.reverse(movieList);
 
-        for (j = 0; j < movieList.size() - 1; j++) {
-            for (k = j + 1; k < movieList.size(); k++) {
-                if (movieList.get(j).noFavorite < movieList.get(k).noFavorite) {
-                    aux = new MyMovie(movieList.get(j));
-                    movieList.set(j, movieList.get(k));
-                    movieList.set(k, aux);
-                }
+//        Collections.sort(movieList, new Comparator<MyMovie>() {
+//            public int compare(final MyMovie v1, final MyMovie v2) {
+//                return v1.getTitle().compareTo(v2.getTitle());
+//            }
+//        });
+//
+//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
+//        Collections.reverse(movieList);
+//
+//        for (j = 0; j < movieList.size() - 1; j++) {
+//            for (k = j + 1; k < movieList.size(); k++) {
+//                if (movieList.get(j).noFavorite < movieList.get(k).noFavorite) {
+//                    aux = new MyMovie(movieList.get(j));
+//                    movieList.set(j, movieList.get(k));
+//                    movieList.set(k, aux);
+//                }
+//            }
+//        }
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < movieList.size(); end++) {
+            if(movieList.get(end).noFavorite == 0) {
+                break;
             }
         }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < movieList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (movieList.get(j).noFavorite != 0) {
                 message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -445,12 +502,19 @@ public class QueryMovies {
 //            }
 //        }
 
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < movieList.size(); end++) {
+            if(movieList.get(end).noViews == 0) {
+                break;
+            }
+        }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < movieList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (movieList.get(j).noViews != 0) {
                 message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -460,8 +524,8 @@ public class QueryMovies {
             }
         }
 
-        message = new StringBuilder(message.substring(0, message.length() - 1));
-        message = new StringBuilder(message.substring(0, message.length() - 1));
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
         message.append("]");
 
         return message.toString();

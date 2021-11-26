@@ -46,40 +46,42 @@ public class MySerialInput extends MyShowInput {
     public int getSerialDuration() {
         int duration = 0;
         for (Season i: seasons) {
-            duration = i.getDuration();
+            duration = duration + i.getDuration(); //
         }
-        return duration;
+        serialDuration = duration;
+        return serialDuration;
     }
 
     public Double getRating() {
-        Double sumAllseasons = 0d;
-        Double sumPerSeason = 0d;
-        for (Season i : seasons) {
-            sumPerSeason = 0d;
-            if (i.getRatings().size() != 0) {
-                for (int j = 0; j < i.getRatings().size(); j++) {
-                    sumPerSeason = sumPerSeason + i.getRatings().get(j);
-                }
-                sumPerSeason = sumPerSeason / i.getRatings().size();
-                sumAllseasons = sumAllseasons + sumPerSeason;
-            }
-        }
-        sumAllseasons = sumAllseasons / numberOfSeasons;
-        rating = sumAllseasons;
-        return rating;
-
 //        Double sumAllseasons = 0d;
 //        Double sumPerSeason = 0d;
-//        for (Season season : seasons) {
-//            if (season.getRatings().size() != 0) {
-//               for(Double rating : season.getRatings()) {
-//                   sumPerSeason = sumPerSeason + rating / season.getRatings().size();
-//               }
-//               sumAllseasons = sumAllseasons + sumPerSeason / numberOfSeasons;
+//        for (Season i : seasons) {
+//            sumPerSeason = 0d;
+//            if (i.getRatings().size() != 0) {
+//                for (int j = 0; j < i.getRatings().size(); j++) {
+//                    sumPerSeason = sumPerSeason + i.getRatings().get(j);
+//                }
+//                sumPerSeason = sumPerSeason / i.getRatings().size();
+//                sumAllseasons = sumAllseasons + sumPerSeason;
 //            }
 //        }
+//        sumAllseasons = sumAllseasons / numberOfSeasons;
 //        rating = sumAllseasons;
 //        return rating;
+
+        Double sumAllseasons = 0d;
+        Double sumPerSeason = 0d;
+        for (Season season : seasons) {
+            if (season.getRatings().size() != 0) {
+               for(Double rating : season.getRatings()) {
+                   sumPerSeason = sumPerSeason + rating / season.getRatings().size();
+               }
+               sumAllseasons = sumAllseasons + sumPerSeason / numberOfSeasons;
+            }
+        }
+        rating = sumAllseasons;
+        ratingSerial = rating;
+        return rating;
     }
 
     @Override

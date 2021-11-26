@@ -6,11 +6,11 @@ import common.Constants;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
-import myclasses.Command;
+import myclasses.Commands.Command;
 import myclasses.MySerialInput;
 import myclasses.MyActor;
 import myclasses.MyMovie;
-import myclasses.ReadData;
+import myclasses.MyRead.ReadData;
 import myclasses.MyUser;
 import myclasses.Query.QueryActors;
 import myclasses.Query.QueryMovies;
@@ -151,10 +151,19 @@ public final class Main {
 
                 if (i.getObjectType().equals("movies")) {
 
-                    ArrayList<MyMovie> movieList = new ArrayList<MyMovie>();
                     QueryMovies queryMovies = new QueryMovies();
 
-                    queryMovies.initializeMovies(genre, year, movies, movieList);
+//                    for(MyMovie p : movies) {
+//                        System.out.print(p.getTitle()+ " ");
+//                    }
+//                    System.out.println();
+
+                    ArrayList<MyMovie> movieList;
+                    movieList = queryMovies.initializeMovies(genre, year, movies);
+//                    for(MyMovie p : movieList) {
+//                        System.out.print(p.getTitle()+ " ");
+//                    }
+//                    System.out.println();
 
                     if (movieList.size() == 0) {
                         message = "Query result: []";
@@ -332,15 +341,15 @@ public final class Main {
                     message = recommendation.BestUnseen(users, username, movies, serials);
                 }
 
-                if(i.getType().equals("search")) {
+                if (i.getType().equals("search")) {
                     message = recommendation.recommendationSearch(users, genre, username, movies, serials);
                 }
 
-                if(i.getType().equals("favorite")) {
+                if (i.getType().equals("favorite")) {
                     message = recommendation.recommendationFavorite(users, username, movies, serials);
                 }
 
-                if(i.getType().equals("popular")) {
+                if (i.getType().equals("popular")) {
                     message = recommendation.Popular(users, username, movies, serials);
                 }
 

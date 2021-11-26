@@ -1,4 +1,8 @@
-package myclasses;
+package myclasses.Commands;
+import myclasses.MyMovie;
+import myclasses.MySerialInput;
+import myclasses.MyUser;
+import myclasses.MyShowInput;
 
 import java.util.ArrayList;
 
@@ -111,6 +115,12 @@ public class Command {
         }
         for (j = 0; j < serials.size(); j++) {
             if (serials.get(j).title.equals(title)) {//Asta inseamna ca titlul este al unui serial.
+
+                if (users.get(contor).isRated(title + seasonNumber)) {
+                    message = "error -> " + title + " has been already rated";
+                    return message;
+                }
+
                 if (!users.get(contor).wasWatched(title)) {
                     message = "error -> " + title + " is not seen";
                     return  message;

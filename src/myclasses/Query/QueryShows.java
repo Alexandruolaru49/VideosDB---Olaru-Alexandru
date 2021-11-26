@@ -15,8 +15,17 @@ public class QueryShows {
                                 final ArrayList<MySerialInput> showList) {
 
         int j, k, ok;
+
+        if((genre.get(0) == null) && (year.get(0) == null)) {
+            System.out.println("Am intrat pe genre si year == null");
+            for (j = 0; j < serials.size(); j++) {
+                showList.add(serials.get(j));
+            }
+        }
+
+
         // DACA GENRE SI YEAR SUNT DIFERITE DE NULL
-        if ((genre.size() > 0) && (year.size() > 0)) {
+        if ((genre.get(0) != null) && (year.get(0) != null)) {
             for (j = 0; j < serials.size(); j++) {
                 ok = 0;
                 if (String.valueOf(serials.get(j).year).equals(year.get(0))) {
@@ -31,29 +40,28 @@ public class QueryShows {
                 }
             }
         }
-
-        if ((genre.size() == 0) && (year.size() > 0)) {
-            for (j = 0; j < serials.size(); j++) {
-                if (String.valueOf(serials.get(j).year).equals(year.get(0))) {
-                    showList.add(serials.get(j));
-                }
-            }
-        }
-
-        if ((genre.size() > 0) && (year.size() == 0)) {
-            for (j = 0; j < serials.size(); j++) {
-                ok = 0;
-
-                for (k = 0; k < serials.get(j).getGenres().size(); k++) {
-                    if (serials.get(j).getGenres().get(k).equals(genre.get(0))) {
-                        ok = 1;
+            if ((genre.get(0) == null) && (year.get(0) != null)) {
+                for (j = 0; j < serials.size(); j++) {
+                    if (String.valueOf(serials.get(j).year).equals(year.get(0))) {
+                        showList.add(serials.get(j));
                     }
                 }
-                if (ok == 1) {
-                    showList.add(serials.get(j));
-                }
             }
-        }
+                if ((genre.get(0) != null) && (year.get(0) == null)) {
+                    for (j = 0; j < serials.size(); j++) {
+                        ok = 0;
+
+                        for (k = 0; k < serials.get(j).getGenres().size(); k++) {
+                            if (serials.get(j).getGenres().get(k).equals(genre.get(0))) {
+                                ok = 1;
+                            }
+                        }
+                        if (ok == 1) {
+                            showList.add(serials.get(j));
+                        }
+                    }
+                }
+
     }
 
     public String ascRating(final ArrayList<MySerialInput> showList, final int number) {
@@ -142,7 +150,7 @@ public class QueryShows {
         message = new StringBuilder("Query result: [");
         j = 0;
         for (j = 0; j < showList.size(); j++) {
-            if (j == (number - 1)) {
+            if (j == (number)) {
                 break;
             }
             message.append(showList.get(j).title);
@@ -291,12 +299,21 @@ public class QueryShows {
 //                }
 //            }
 //        }
+
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < showList.size(); end++) {
+            if(showList.get(end).ratingSerial == 0d) {
+                break;
+            }
+        }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < showList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (showList.get(j).ratingSerial != 0d) {
                 message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -345,7 +362,7 @@ public class QueryShows {
         message = new StringBuilder("Query result: [");
         j = 0;
         for (j = 0; j < showList.size(); j++) {
-            if (j == (number - 1)) {
+            if (j == (number)) {
                 break;
             }
             message.append(showList.get(j).title);
@@ -391,12 +408,20 @@ public class QueryShows {
 //                }
 //            }
 //        }
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < showList.size(); end++) {
+            if(showList.get(end).noFavorite == 0) {
+                break;
+            }
+        }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < showList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (showList.get(j).noFavorite != 0d) {
                 message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -405,8 +430,8 @@ public class QueryShows {
                 j++;
             }
         }
-        message = new StringBuilder(message.substring(0, message.length() - 1));
-        message = new StringBuilder(message.substring(0, message.length() - 1));
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
         message.append("]");
 
 
@@ -446,12 +471,20 @@ public class QueryShows {
 //                }
 //            }
 //        }
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < showList.size(); end++) {
+            if(showList.get(end).noViews == 0) {
+                break;
+            }
+        }
+
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < showList.size() && count != 0) {
+        while (j < end && count != 0) {
             if (showList.get(j).noViews != 0d) {
                 message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;

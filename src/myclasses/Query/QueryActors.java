@@ -28,31 +28,31 @@ public class QueryActors {
         StringBuilder message;
         int count = number;
 
-//        actorList.sort((v1, v2) -> {
-//            if (v1.getActorAverage(movies, serials) == v2.getActorAverage(movies, serials)) {
-//                return v1.getName().compareTo(v2.getName());
-//            } else {
-//                return Double.compare(v1.getActorAverage(movies, serials), v2.getActorAverage(movies, serials));
-//            }
-//        });
-
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
+        actorList.sort((v1, v2) -> {
+            if (v1.getActorAverage(movies, serials).equals(v2.getActorAverage(movies, serials))) {
                 return v1.getName().compareTo(v2.getName());
+            } else {
+                return Double.compare(v1.getActorAverage(movies, serials), v2.getActorAverage(movies, serials));
             }
         });
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-
-        for (j = 0; j < actorList.size() - 1; j++) {
-            for (k = j + 1; k < actorList.size(); k++) {
-                if ((actorList.get(j).getActorAverage(movies, serials)) > (actorList.get(k).getActorAverage(movies, serials))) {
-                    aux = new MyActor(actorList.get(j));
-                    actorList.set(j, actorList.get(k));
-                    actorList.set(k, aux);
-                }
-            }
-        }
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//
+//        for (j = 0; j < actorList.size() - 1; j++) {
+//            for (k = j + 1; k < actorList.size(); k++) {
+//                if ((actorList.get(j).getActorAverage(movies, serials)) > (actorList.get(k).getActorAverage(movies, serials))) {
+//                    aux = new MyActor(actorList.get(j));
+//                    actorList.set(j, actorList.get(k));
+//                    actorList.set(k, aux);
+//                }
+//            }
+//        }
 
         message = new StringBuilder("Query result: [");
         j = 0;
@@ -84,40 +84,47 @@ public class QueryActors {
         StringBuilder message;
         int count = number;
 
-//        actorList.sort((v1, v2) -> {
-//            if (v1.getActorAverage(movies, serials) == v2.getActorAverage(movies, serials)) {
-//                return v2.getName().compareTo(v1.getName());
-//            } else {
-//                return Double.compare(v2.getActorAverage(movies, serials), v1.getActorAverage(movies, serials));
-//            }
-//        });
-
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
-                return v1.getName().compareTo(v2.getName());
+        actorList.sort((v1, v2) -> {
+            if (v1.getActorAverage(movies, serials).equals(v2.getActorAverage(movies, serials))) {
+                return v2.getName().compareTo(v1.getName());
+            } else {
+                return Double.compare(v2.getActorAverage(movies, serials), v1.getActorAverage(movies, serials));
             }
         });
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//
+//        Collections.reverse(actorList);
+//
+//        for (j = 0; j < actorList.size() - 1; j++) {
+//            for (k = j + 1; k < actorList.size(); k++) {
+//                if ((actorList.get(j).getActorAverage(movies, serials)) < (actorList.get(k).getActorAverage(movies, serials))) {
+//                    aux = new MyActor(actorList.get(j));
+//                    actorList.set(j, actorList.get(k));
+//                    actorList.set(k, aux);
+//                }
+//            }
+//        }
 
-        Collections.reverse(actorList);
-
-        for (j = 0; j < actorList.size() - 1; j++) {
-            for (k = j + 1; k < actorList.size(); k++) {
-                if ((actorList.get(j).getActorAverage(movies, serials)) < (actorList.get(k).getActorAverage(movies, serials))) {
-                    aux = new MyActor(actorList.get(j));
-                    actorList.set(j, actorList.get(k));
-                    actorList.set(k, aux);
-                }
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < actorList.size(); end++) {
+            if(actorList.get(end).getActorAverage(movies, serials) == 0d) {
+                break;
             }
         }
 
         message = new StringBuilder("Query result: [");
         j = 0;
-        while (j < actorList.size() && count != 0) {
+        while (j < end && count != 0) {
             if ((actorList.get(j).getActorAverage(movies, serials)) != 0d) {
                 message.append(actorList.get(j).getName());
-                if ((j != actorList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -271,13 +278,17 @@ public class QueryActors {
             return message.toString();
         }
 
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
-                return v1.getName().compareTo(v2.getName());
-            }
-        });
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+        actorList.sort((v1, v2) -> {
+            return v1.getName().compareTo(v2.getName());
+        });
 
 
         message = new StringBuilder("Query result: [");
@@ -312,14 +323,18 @@ public class QueryActors {
             return message.toString();
         }
 
-        Collections.sort(actorList, new Comparator<MyActor>() {
-            public int compare(final MyActor v1, final MyActor v2) {
-                return v1.getName().compareTo(v2.getName());
-            }
-        });
+//        Collections.sort(actorList, new Comparator<MyActor>() {
+//            public int compare(final MyActor v1, final MyActor v2) {
+//                return v1.getName().compareTo(v2.getName());
+//            }
+//        });
+//
+//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
+//        Collections.reverse(actorList);
 
-        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-        Collections.reverse(actorList);
+        actorList.sort((v1, v2) -> {
+            return v2.getName().compareTo(v1.getName());
+        });
 
 
         message = new StringBuilder("Query result: [");

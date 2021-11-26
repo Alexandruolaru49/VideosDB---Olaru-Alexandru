@@ -1,10 +1,16 @@
-package myclasses;
+package myclasses.MyRead;
 
 //import fileio.ActorInputData;
 //import fileio.MovieInputData;
 //import fileio.SerialInputData;
 //import fileio.UserInputData;
 import fileio.*;
+import myclasses.MyShowInput;
+import myclasses.MyMovie;
+import myclasses.MySerialInput;
+import myclasses.MyActor;
+import myclasses.MyUser;
+
 
 import java.util.ArrayList;
 

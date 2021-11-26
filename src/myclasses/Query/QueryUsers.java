@@ -100,12 +100,21 @@ public class QueryUsers {
 //            }
 //        }
 
+
         message = new StringBuilder("Query result: [");
+
+        int end; //!!!!!!!!!!!!!!!!!!!
+        for (end = 0; end < userList.size(); end++) {
+            if(userList.get(end).ratingsGiven == 0) {
+                break;
+            }
+        }
+
         j = 0;
-        while(j < userList.size() && number != 0) {
+        while(j < end && number != 0) {
             if(userList.get(j).ratingsGiven != 0) {
                 message.append(userList.get(j).username);
-                if ((j != userList.size() - 1) && (number > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (number > 1)) { //  AICI!!!!!
                     message.append(", ");
                 }
                 j++;
@@ -115,6 +124,9 @@ public class QueryUsers {
                 j++;
             }
         }
+
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
+//        message = new StringBuilder(message.substring(0, message.length() - 1));
 
         message.append("]");
 

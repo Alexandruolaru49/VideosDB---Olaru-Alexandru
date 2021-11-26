@@ -83,6 +83,7 @@ public class Recommendation {
             }
         }
 
+        message = "StandardRecommendation cannot be applied!";
         return message;
     }
 

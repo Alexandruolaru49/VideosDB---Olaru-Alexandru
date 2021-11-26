@@ -6,6 +6,7 @@ import fileio.ActorInputData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import utils.Utils;
 
 public class MyActor {
 
@@ -90,7 +91,7 @@ public class MyActor {
         int nr = 0;
         for (String s : awards) {
             for (Map.Entry<ActorsAwards, Integer> i : this.awards.entrySet()) {
-                if (s.equals(i.getKey())) {
+                if (Utils.stringToAwards(s).equals(i.getKey())) {
                     nr++;
                 }
             }
@@ -103,9 +104,13 @@ public class MyActor {
 
     public boolean hasAllKeywords(final List<String> words) {
         int nr = 0;
+        String[] description = getCareerDescription().toLowerCase().split("[, -.() ']+");
         for (String s : words) {
-            if (careerDescription.toLowerCase().contains(s.toLowerCase())) {
-                nr++;
+            for(String i : description) {
+                if (i.equals(s)) {
+                    nr++;
+                    break;
+                }
             }
         }
         if (nr == words.size()) {
