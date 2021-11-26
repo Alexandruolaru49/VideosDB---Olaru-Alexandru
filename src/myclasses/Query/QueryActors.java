@@ -3,15 +3,18 @@ package myclasses.Query;
 import myclasses.MyActor;
 import myclasses.MyMovie;
 import myclasses.MySerialInput;
-
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class QueryActors {
 
+    /**
+     * Metoda care initializeaza lista de actori care urmeaza a fi sortata ulterior
+     * @param actors
+     * lista de actori din database
+     * @param actorList
+     * lista noua de actori de tipul propriu in care vor fi adaugati actorii din database
+     */
     public void initializeActors(final ArrayList<MyActor> actors,
                                      final ArrayList<MyActor> actorList) {
         for (MyActor j : actors) {
@@ -19,12 +22,25 @@ public class QueryActors {
         }
     }
 
+    /**
+     * Metoda care apeleaza metoda de aflare a mediei actorilor specifica acestora
+     * si sorteaza crescator lista in functie de acest criteriu. Am suprascris
+     * metoda sort a interfetei List pentru a sorta crescator dupa media actorului,
+     * iar apoi crescator alfabetic.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param actorList
+     * lista de actori ce va fi sortata
+     * @param number
+     * primii "number" actori ce se doresc afisati
+     */
     public String ascAverage(final ArrayList<MyActor> actorList,
                                    final int number,
                                    final ArrayList<MyMovie> movies,
                                    final ArrayList<MySerialInput> serials) {
-        int j, k;
-        MyActor aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -32,34 +48,18 @@ public class QueryActors {
             if (v1.getActorAverage(movies, serials).equals(v2.getActorAverage(movies, serials))) {
                 return v1.getName().compareTo(v2.getName());
             } else {
-                return Double.compare(v1.getActorAverage(movies, serials), v2.getActorAverage(movies, serials));
+                return Double.compare(v1.getActorAverage(movies, serials),
+                        v2.getActorAverage(movies, serials));
             }
         });
 
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-//
-//        for (j = 0; j < actorList.size() - 1; j++) {
-//            for (k = j + 1; k < actorList.size(); k++) {
-//                if ((actorList.get(j).getActorAverage(movies, serials)) > (actorList.get(k).getActorAverage(movies, serials))) {
-//                    aux = new MyActor(actorList.get(j));
-//                    actorList.set(j, actorList.get(k));
-//                    actorList.set(k, aux);
-//                }
-//            }
-//        }
-
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < actorList.size() && count != 0) {
             if ((actorList.get(j).getActorAverage(movies, serials)) != 0d) {
                 message.append(actorList.get(j).getName());
-                if ((j != actorList.size() - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != actorList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -74,13 +74,25 @@ public class QueryActors {
         return message.toString();
     }
 
-
+    /**
+     * Metoda care apeleaza metoda de aflare a mediei actorilor specifica acestora
+     * si sorteaza crescator lista in functie de acest criteriu. Am suprascris
+     * metoda sort a interfetei List pentru a sorta descrescator dupa media actorului,
+     * iar apoi descrescator alfabetic.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param actorList
+     * lista de actori ce va fi sortata
+     * @param number
+     * primii "number" actori ce se doresc afisati
+     */
     public String descAverage(final ArrayList<MyActor> actorList,
                                     final int number,
                                     final ArrayList<MyMovie> movies,
                                     final ArrayList<MySerialInput> serials) {
-        int j, k;
-        MyActor aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -88,43 +100,25 @@ public class QueryActors {
             if (v1.getActorAverage(movies, serials).equals(v2.getActorAverage(movies, serials))) {
                 return v2.getName().compareTo(v1.getName());
             } else {
-                return Double.compare(v2.getActorAverage(movies, serials), v1.getActorAverage(movies, serials));
+                return Double.compare(v2.getActorAverage(movies, serials),
+                        v1.getActorAverage(movies, serials));
             }
         });
 
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-//
-//        Collections.reverse(actorList);
-//
-//        for (j = 0; j < actorList.size() - 1; j++) {
-//            for (k = j + 1; k < actorList.size(); k++) {
-//                if ((actorList.get(j).getActorAverage(movies, serials)) < (actorList.get(k).getActorAverage(movies, serials))) {
-//                    aux = new MyActor(actorList.get(j));
-//                    actorList.set(j, actorList.get(k));
-//                    actorList.set(k, aux);
-//                }
-//            }
-//        }
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < actorList.size(); end++) {
-            if(actorList.get(end).getActorAverage(movies, serials) == 0d) {
+            if (actorList.get(end).getActorAverage(movies, serials) == 0d) {
                 break;
             }
         }
 
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < end && count != 0) {
             if ((actorList.get(j).getActorAverage(movies, serials)) != 0d) {
                 message.append(actorList.get(j).getName());
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -139,12 +133,20 @@ public class QueryActors {
         return message.toString();
     }
 
-
+    /**
+     * Metoda care filtreaza doar actorii care au toate premiile
+     * primite ca parametru, apeleaza metoda specifica actorilor de
+     * a obtine numarul total de premii pentru fiecare, sortarea
+     * fiind facuta crescator dupa acest criteriu, apoi crescator
+     * alfabetic.
+     * @param actors
+     * lista cu actori din database
+     * @param awards
+     * lista cu premii din database
+     */
     public String ascAwards(final ArrayList<MyActor> actors,
                                   final List<String> awards) {
 
-        int j, k;
-        MyActor aux;
         StringBuilder message;
         ArrayList<MyActor> actorList = new ArrayList<MyActor>();
 
@@ -167,25 +169,8 @@ public class QueryActors {
             }
         });
 
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-//
-//        for (j = 0; j < actorList.size() - 1; j++) {
-//            for (k = j + 1; k < actorList.size(); k++) {
-//                if ((actorList.get(j).getAwardsNumber()) > (actorList.get(k).getAwardsNumber())) {
-//                    aux = new MyActor(actorList.get(j));
-//                    actorList.set(j, actorList.get(k));
-//                    actorList.set(k, aux);
-//                }
-//            }
-//        }
-
         message = new StringBuilder("Query result: [");
+
         for (int i = 0; i < actorList.size(); i++) {
             message.append(actorList.get(i).getName());
             if (i != (actorList.size() - 1)) {
@@ -195,15 +180,22 @@ public class QueryActors {
         message.append("]");
 
         return message.toString();
-
     }
 
-
+    /**
+     * Metoda care filtreaza doar actorii care au toate premiile
+     * primite ca parametru, apeleaza metoda specifica actorilor de
+     * a obtine numarul total de premii pentru fiecare, sortarea
+     * fiind facuta descrescator dupa acest criteriu, apoi descrescator
+     * alfabetic.
+     * @param actors
+     * lista cu actori din database
+     * @param awards
+     * lista cu premii din database
+     */
     public String descAwards(final ArrayList<MyActor> actors,
                                    final List<String> awards) {
 
-        int j, k;
-        MyActor aux;
         StringBuilder message;
         ArrayList<MyActor> actorList = new ArrayList<MyActor>();
 
@@ -226,26 +218,8 @@ public class QueryActors {
             }
         });
 
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-//        Collections.reverse(actorList);
-//
-//        for (j = 0; j < actorList.size() - 1; j++) {
-//            for (k = j + 1; k < actorList.size(); k++) {
-//                if ((actorList.get(j).getAwardsNumber()) < (actorList.get(k).getAwardsNumber())) {
-//                    aux = new MyActor(actorList.get(j));
-//                    actorList.set(j, actorList.get(k));
-//                    actorList.set(k, aux);
-//                }
-//            }
-//        }
-
         message = new StringBuilder("Query result: [");
+
         for (int i = 0; i < actorList.size(); i++) {
             message.append(actorList.get(i).getName());
             if (i != (actorList.size() - 1)) {
@@ -258,12 +232,19 @@ public class QueryActors {
 
     }
 
-
+    /**
+     * Metoda care filtreaza doar actorii care au toate cuvintele
+     * cheie in descrierea acestora, fiind apelata o metoda
+     * caracteristica actorilor. Acestia urmeaza a fi sortati
+     * crescator alfabetic dupa nume.
+     * @param actors
+     * lista cu actori din database
+     * @param words
+     * lista cu cuvintele cheie din database
+     */
     public String ascDescription(final ArrayList<MyActor> actors,
                                        final List<String> words) {
 
-        int j, k;
-        MyActor aux;
         StringBuilder message;
         ArrayList<MyActor> actorList = new ArrayList<MyActor>();
 
@@ -277,21 +258,13 @@ public class QueryActors {
             message = new StringBuilder("Query result: []");
             return message.toString();
         }
-
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
 
         actorList.sort((v1, v2) -> {
             return v1.getName().compareTo(v2.getName());
         });
 
-
         message = new StringBuilder("Query result: [");
+
         for (int i = 0; i < actorList.size(); i++) {
             message.append(actorList.get(i).getName());
             if (i != (actorList.size() - 1)) {
@@ -304,11 +277,19 @@ public class QueryActors {
 
     }
 
+    /**
+     * Metoda care filtreaza doar actorii care au toate cuvintele
+     * cheie in descrierea acestora, fiind apelata o metoda
+     * caracteristica actorilor. Acestia urmeaza a fi sortati
+     * descrescator alfabetic dupa nume.
+     * @param actors
+     * lista cu actori din database
+     * @param words
+     * lista cu cuvintele cheie din database
+     */
     public String descDescription(final ArrayList<MyActor> actors,
                                         final List<String> words) {
 
-        int j, k;
-        MyActor aux;
         StringBuilder message;
         ArrayList<MyActor> actorList = new ArrayList<MyActor>();
 
@@ -323,21 +304,12 @@ public class QueryActors {
             return message.toString();
         }
 
-//        Collections.sort(actorList, new Comparator<MyActor>() {
-//            public int compare(final MyActor v1, final MyActor v2) {
-//                return v1.getName().compareTo(v2.getName());
-//            }
-//        });
-//
-//        Collections.sort(actorList, Comparator.comparing(MyActor::getName));
-//        Collections.reverse(actorList);
-
         actorList.sort((v1, v2) -> {
             return v2.getName().compareTo(v1.getName());
         });
 
-
         message = new StringBuilder("Query result: [");
+
         for (int i = 0; i < actorList.size(); i++) {
             message.append(actorList.get(i).getName());
             if (i != (actorList.size() - 1)) {

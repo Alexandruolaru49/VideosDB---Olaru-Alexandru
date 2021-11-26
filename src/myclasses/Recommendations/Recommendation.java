@@ -1,20 +1,29 @@
 package myclasses.Recommendations;
 
-import myclasses.*;
+import myclasses.MyUser;
+import myclasses.MyShowInput;
+import myclasses.MySerialInput;
+import myclasses.MyMovie;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Recommendation {
 
-    public boolean isUser(ArrayList<MyUser> users, String username) {
-        for (MyUser i : users) {
-            if (i.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Metoda care gaseste si returneaza utilizatorul cu numele
+     * dat ca parametru.
+     * @param users
+     * lista de utilizatori din database
+     * @param username
+     * numele utilizatorului care va fi cautat in lista
+     */
     public MyUser getUser(final ArrayList<MyUser> users, final String username) {
         MyUser j = users.get(0);
         for (MyUser i : users) {
@@ -25,26 +34,34 @@ public class Recommendation {
         return j;
     }
 
-    public HashMap<String, Integer> getGenremap(ArrayList<MyShowInput> videos) {
+    /**
+     * Metoda care primeste o lista cu videoclipuri. Se creeaza un HashMap
+     * care are ca si cheie genul videoclipului, iar ca valoare, numarul
+     * total de vizualizari al respectivului gen. Se parcurg toate videoclipurile
+     * si se initializeaza HashMap-ul , iar apoi se sorteaza descrescator dupa valoare,
+     * adica dupa numarul de vizualizari al fiecarui gen.
+     * @param videos
+     * lista cu videoclipuri
+     */
+    public HashMap<String, Integer> getGenremap(final ArrayList<MyShowInput> videos) {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         for (MyShowInput i : videos) {
             for (String j : i.getGenres()) {
                 if (!map.containsKey(j)) {
-                    map.put(j, i.noViews);
+                    map.put(j, i.getNoViews());
                 } else {
-                    map.put(j, map.get(j) + i.noViews);
+                    map.put(j, map.get(j) + i.getNoViews());
                 }
             }
         }
 
-        List<HashMap.Entry<String, Integer> > list =
-                new LinkedList<HashMap.Entry<String, Integer> >(map.entrySet());
+        List<HashMap.Entry<String, Integer>> list =
+                new LinkedList<HashMap.Entry<String, Integer>>(map.entrySet());
 
         Collections.sort(list, new Comparator<HashMap.Entry<String, Integer>>() {
-            public int compare(HashMap.Entry<String, Integer> v1,
-                               HashMap.Entry<String, Integer> v2)
-            {
-                if(v2.getValue().equals(v1.getValue())) {
+            public int compare(final HashMap.Entry<String, Integer> v1,
+                               final HashMap.Entry<String, Integer> v2) {
+                if (v2.getValue().equals(v1.getValue())) {
                     return v2.getKey().compareTo(v1.getKey());
                 } else {
                     return Integer.compare(v2.getValue(), v1.getValue());
@@ -53,14 +70,26 @@ public class Recommendation {
         });
 
         HashMap<String, Integer> newMap = new LinkedHashMap<String, Integer>();
-        for(Map.Entry<String, Integer> i : list) {
+        for (Map.Entry<String, Integer> i : list) {
             newMap.put(i.getKey(), i.getValue());
         }
 
         return newMap;
     }
 
-    public String Standard(final ArrayList<MyUser> users,
+    /**
+     * Metoda care se ajuta de metoda utilizatorului pentru a
+     * putea afisa primul videoclip nevizualizat din database.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param username
+     * numele utilizatorului pentru care se face recomandarea
+     * @param users
+     * lista de utilizatori din database
+     */
+    public String recommendationStandard(final ArrayList<MyUser> users,
                            final String username,
                            final ArrayList<MyMovie> movies,
                            final ArrayList<MySerialInput> serials) {
@@ -70,15 +99,15 @@ public class Recommendation {
         MyUser user = new MyUser(getUser(users, username));
 
         for (MyMovie i : movies) {
-            if (!user.wasWatched(i.title)) {
-                message = "StandardRecommendation result: " + i.title;
+            if (!user.wasWatched(i.getTitle())) {
+                message = "StandardRecommendation result: " + i.getTitle();
                 return message;
             }
         }
 
         for (MySerialInput i : serials) {
-            if (!user.wasWatched(i.title)) {
-                message = "StandardRecommendation result: " + i.title;
+            if (!user.wasWatched(i.getTitle())) {
+                message = "StandardRecommendation result: " + i.getTitle();
                 return message;
             }
         }
@@ -87,7 +116,21 @@ public class Recommendation {
         return message;
     }
 
-    public String BestUnseen(final ArrayList<MyUser> users,
+    /**
+     * Metoda care adauga toate filmele si serialele intr-o lista cu videoclipuri
+     * de tipul MyShowInput, pe care o sorteaza descrescator dupa ratingul
+     * clipului. Se va afisa videoclipul cel mai bine notat si care nu a fost
+     * vazut de catre utilizatorul pentru care se face recomandarea.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param username
+     * numele utilizatorului pentru care se face recomandarea
+     * @param users
+     * lista de utilizatori din database
+     */
+    public String bestUnseen(final ArrayList<MyUser> users,
                              final String username,
                              final ArrayList<MyMovie> movies,
                              final ArrayList<MySerialInput> serials) {
@@ -102,7 +145,7 @@ public class Recommendation {
             videos.add(i);
         }
 
-        videos.sort((v1, v2) -> Double.compare(v2.rating, v1.rating));
+        videos.sort((v1, v2) -> Double.compare(v2.getRating(), v1.getRating()));
 
         MyUser user = new MyUser(getUser(users, username));
 
@@ -125,7 +168,23 @@ public class Recommendation {
         return message.toString();
     }
 
-
+    /**
+     * Metoda care adauga toate filmele si serialele dintr-un gen specific si care nu
+     * au fost vazute inca de catre utilizator intr-o lista cu videoclipuri
+     * de tipul MyShowInput. Aceasta lista va fi sortata crescator dupa rating si
+     * alfabetic si va fi afisata, recomandarea fiind aplicata numai in cazul in care
+     * utilizatorul are o subscriptie de tip "PREMIUM".
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param username
+     * numele utilizatorului pentru care se face recomandarea
+     * @param users
+     * lista de utilizatori din database
+     * @param genre
+     * genul cerut
+     */
     public String recommendationSearch(final ArrayList<MyUser> users,
                                        final String genre,
                                        final String username,
@@ -148,7 +207,7 @@ public class Recommendation {
             }
         }
 
-        if(videos.size() == 0) {
+        if (videos.size() == 0) {
             message = new StringBuilder("SearchRecommendation cannot be applied!");
             return message.toString();
         }
@@ -161,10 +220,10 @@ public class Recommendation {
         message = new StringBuilder("SearchRecommendation result: [");
 
         videos.sort((v1, v2) -> {
-            if (v1.rating.equals(v2.rating)) {
+            if (v1.getRating().equals(v2.getRating())) {
                 return v1.getTitle().compareTo(v2.getTitle());
             } else {
-                return Double.compare(v1.rating, v2.rating);
+                return Double.compare(v1.getRating(), v2.getRating());
             }
 
         });
@@ -180,6 +239,21 @@ public class Recommendation {
     }
 
 
+    /**
+     * Metoda care adauga toate filmele si serialele nevazute de
+     * utilizator intr-o lista cu videoclipuri de tipul MyShowInput,
+     * pe care o sorteaza descrescator dupa numarul de favorite ale clipului. Se va afisa
+     * videoclipul cel mai des intalnit in lista de favorite ale tuturor utilizatorilor si
+     * care nu a fost vazut de catre utilizatorul pentru care se face recomandarea.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param username
+     * numele utilizatorului pentru care se face recomandarea
+     * @param users
+     * lista de utilizatori din database
+     */
     public String recommendationFavorite(final ArrayList<MyUser> users,
                                          final String username,
                                          final ArrayList<MyMovie> movies,
@@ -201,7 +275,7 @@ public class Recommendation {
             }
         }
 
-        if(videos.size() == 0) {
+        if (videos.size() == 0) {
             message = new StringBuilder("FavoriteRecommendation cannot be applied!");
             return message.toString();
         }
@@ -213,14 +287,28 @@ public class Recommendation {
 
         message = new StringBuilder("FavoriteRecommendation result: ");
 
-        videos.sort((v1, v2) -> Double.compare(v2.noFavorite, v1.noFavorite));
+        videos.sort((v1, v2) -> Double.compare(v2.getNoFavorite(), v1.getNoFavorite()));
 
         message.append(videos.get(0).getTitle());
         return message.toString();
     }
 
-
-    public String Popular(final ArrayList<MyUser> users,
+    /**
+     * Metoda care adauga toate filmele si serialele nevazute de utilizator
+     * intr-o lista de videoclipuri. Se va apela metoda "getGenremap" care
+     * va intoarce un HashMap sortat descrescator dupa cel mai popular gen.
+     * Se va parcurge lista de videoclipuri, pana cand se va gasi unul din cel mai popular gen,
+     * pe care utilizatorul nu il vizionase deja, acesta fiind afisat.
+     * @param movies
+     * lista de filme din database
+     * @param serials
+     * lista de seriale din database
+     * @param username
+     * numele utilizatorului pentru care se face recomandarea
+     * @param users
+     * lista de utilizatori din database
+     */
+    public String recommendationPopular(final ArrayList<MyUser> users,
                                          final String username,
                                          final ArrayList<MyMovie> movies,
                                          final ArrayList<MySerialInput> serials) {
@@ -241,7 +329,7 @@ public class Recommendation {
             }
         }
 
-        if(videos.size() == 0) {
+        if (videos.size() == 0) {
             message = new StringBuilder("PopularRecommendation cannot be applied!");
             return message.toString();
         }
@@ -268,7 +356,6 @@ public class Recommendation {
 
         return message.toString();
     }
-
 
 }
 

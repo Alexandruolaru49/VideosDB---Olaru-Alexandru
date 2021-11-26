@@ -1,14 +1,24 @@
 package myclasses.Query;
 
 import myclasses.MySerialInput;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class QueryShows {
 
+    /**
+     * Metoda care initializeaza lista de seriale care urmeaza a fi sortata ulterior
+     * Se face filtrarea, fiind adaugate in lista noua doar serialele care au anul si genul cerut,
+     * in cazul in care este specificat unul anume.
+     * @param serials
+     * lista de filme din database
+     * @param showList
+     * lista noua de seriale ce contine serialele filtrate dupa gen si an
+     * @param genre
+     * genul filmului din database cu care se va face filtrarea
+     * @param year
+     * anul fimului din database cu care se va face filtrarea
+     */
     public void initializeShows(final List<String> genre,
                                 final List<String> year,
                                 final ArrayList<MySerialInput> serials,
@@ -16,19 +26,16 @@ public class QueryShows {
 
         int j, k, ok;
 
-        if((genre.get(0) == null) && (year.get(0) == null)) {
-            System.out.println("Am intrat pe genre si year == null");
+        if ((genre.get(0) == null) && (year.get(0) == null)) {
             for (j = 0; j < serials.size(); j++) {
                 showList.add(serials.get(j));
             }
         }
 
-
-        // DACA GENRE SI YEAR SUNT DIFERITE DE NULL
         if ((genre.get(0) != null) && (year.get(0) != null)) {
             for (j = 0; j < serials.size(); j++) {
                 ok = 0;
-                if (String.valueOf(serials.get(j).year).equals(year.get(0))) {
+                if (String.valueOf(serials.get(j).getYear()).equals(year.get(0))) {
                     for (k = 0; k < serials.get(j).getGenres().size(); k++) {
                         if (serials.get(j).getGenres().get(k).equals(genre.get(0))) {
                             ok = 1;
@@ -40,34 +47,42 @@ public class QueryShows {
                 }
             }
         }
-            if ((genre.get(0) == null) && (year.get(0) != null)) {
-                for (j = 0; j < serials.size(); j++) {
-                    if (String.valueOf(serials.get(j).year).equals(year.get(0))) {
+
+        if ((genre.get(0) == null) && (year.get(0) != null)) {
+            for (j = 0; j < serials.size(); j++) {
+                if (String.valueOf(serials.get(j).getYear()).equals(year.get(0))) {
                         showList.add(serials.get(j));
-                    }
                 }
             }
-                if ((genre.get(0) != null) && (year.get(0) == null)) {
-                    for (j = 0; j < serials.size(); j++) {
-                        ok = 0;
+        }
 
-                        for (k = 0; k < serials.get(j).getGenres().size(); k++) {
-                            if (serials.get(j).getGenres().get(k).equals(genre.get(0))) {
-                                ok = 1;
-                            }
-                        }
-                        if (ok == 1) {
-                            showList.add(serials.get(j));
-                        }
+        if ((genre.get(0) != null) && (year.get(0) == null)) {
+            for (j = 0; j < serials.size(); j++) {
+                ok = 0;
+
+                for (k = 0; k < serials.get(j).getGenres().size(); k++) {
+                    if (serials.get(j).getGenres().get(k).equals(genre.get(0))) {
+                        ok = 1;
                     }
                 }
-
+                if (ok == 1) {
+                    showList.add(serials.get(j));
+                }
+            }
+        }
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod crescator dupa ratingul acestora,
+     * iar apoi crescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String ascRating(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -79,30 +94,12 @@ public class QueryShows {
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).ratingSerial > showList.get(k).ratingSerial) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
         j = 0;
         while (j < showList.size() && count != 0) {
-            if (showList.get(j).ratingSerial != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (count > 1)) { //  AICI!!!!!
+            if (showList.get(j).getRatingSerial() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != showList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -116,10 +113,17 @@ public class QueryShows {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod crescator dupa durata acestora,
+     * iar apoi crescator dupa nume
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String ascLongest(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
 
         showList.sort((v1, v2) -> {
@@ -130,31 +134,14 @@ public class QueryShows {
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).serialDuration > showList.get(k).serialDuration) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
-        j = 0;
+
         for (j = 0; j < showList.size(); j++) {
             if (j == (number)) {
                 break;
             }
-            message.append(showList.get(j).title);
-            if ((j != showList.size() - 1) && (j != (number - 1))) { //  AICI!!!!!
+            message.append(showList.get(j).getTitle());
+            if ((j != showList.size() - 1) && (j != (number - 1))) {
                 message.append(", ");
             }
         }
@@ -163,44 +150,35 @@ public class QueryShows {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod crescator dupa numarul de favorite
+     * ale acestora, iar apoi crescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String ascFavorite(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         showList.sort((v1, v2) -> {
-            if (v1.noFavorite == v2.noFavorite) {
+            if (v1.getNoFavorite() == v2.getNoFavorite()) {
                 return v1.getTitle().compareTo(v2.getTitle());
             } else {
-                return Integer.compare(v1.noFavorite, v2.noFavorite);
+                return Integer.compare(v1.getNoFavorite(), v2.getNoFavorite());
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).noFavorite > showList.get(k).noFavorite) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < showList.size() && count != 0) {
-            if (showList.get(j).noFavorite != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (count > 1)) { //  AICI!!!!!
+            if (showList.get(j).getNoFavorite() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != showList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -214,44 +192,35 @@ public class QueryShows {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod crescator dupa numarul de vizionari
+     * ale acestora, iar apoi crescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String ascViews(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         showList.sort((v1, v2) -> {
-            if (v1.noViews == v2.noViews) {
+            if (v1.getNoViews() == v2.getNoViews()) {
                 return v1.getTitle().compareTo(v2.getTitle());
             } else {
-                return Double.compare(v1.noViews, v2.noViews);
+                return Double.compare(v1.getNoViews(), v2.getNoViews());
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).noViews > showList.get(k).noViews) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
+
         j = 0;
-        while (j < showList.size() && number != 0) {
-            if (showList.get(j).noViews != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != showList.size() - 1) && (number > 1)) { //  AICI!!!!!
+        while (j < showList.size() && count != 0) {
+            if (showList.get(j).getNoViews() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != showList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -265,11 +234,17 @@ public class QueryShows {
         return message.toString();
     }
 
-
+    /**
+     * Metoda care compara lista de seriale in mod descrescator dupa ratingul acestora,
+     * iar apoi descrescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String descRating(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -281,29 +256,9 @@ public class QueryShows {
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//        Collections.reverse(showList);
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).ratingSerial < showList.get(k).ratingSerial) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
-
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < showList.size(); end++) {
-            if(showList.get(end).ratingSerial == 0d) {
+            if (showList.get(end).getRatingSerial() == 0d) {
                 break;
             }
         }
@@ -311,9 +266,9 @@ public class QueryShows {
         message = new StringBuilder("Query result: [");
         j = 0;
         while (j < end && count != 0) {
-            if (showList.get(j).ratingSerial != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (showList.get(j).getRatingSerial() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -327,10 +282,17 @@ public class QueryShows {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod descrescator dupa durata acestora,
+     * iar apoi descrescator dupa nume
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String descLongest(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
 
         showList.sort((v1, v2) -> {
@@ -341,32 +303,14 @@ public class QueryShows {
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//        Collections.reverse(showList);
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).serialDuration < showList.get(k).serialDuration) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
-        j = 0;
+
         for (j = 0; j < showList.size(); j++) {
             if (j == (number)) {
                 break;
             }
-            message.append(showList.get(j).title);
-            if ((j != showList.size() - 1) && (j != (number - 1))) { //  AICI!!!!!
+            message.append(showList.get(j).getTitle());
+            if ((j != showList.size() - 1) && (j != (number - 1))) {
                 message.append(", ");
             }
         }
@@ -375,53 +319,43 @@ public class QueryShows {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod descrescator dupa numarul de favorite
+     * ale acestora, iar apoi descrescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String descFavorite(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         showList.sort((v1, v2) -> {
-            if (v1.noFavorite == v2.noFavorite) {
+            if (v1.getNoFavorite() == v2.getNoFavorite()) {
                 return v2.getTitle().compareTo(v1.getTitle());
             } else {
-                return Integer.compare(v2.noFavorite, v1.noFavorite);
+                return Integer.compare(v2.getNoFavorite(), v1.getNoFavorite());
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//        Collections.reverse(showList);
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).noFavorite < showList.get(k).noFavorite) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
 
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < showList.size(); end++) {
-            if(showList.get(end).noFavorite == 0) {
+            if (showList.get(end).getNoFavorite() == 0) {
                 break;
             }
         }
 
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < end && count != 0) {
-            if (showList.get(j).noFavorite != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (showList.get(j).getNoFavorite() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -430,61 +364,48 @@ public class QueryShows {
                 j++;
             }
         }
-//        message = new StringBuilder(message.substring(0, message.length() - 1));
-//        message = new StringBuilder(message.substring(0, message.length() - 1));
-        message.append("]");
 
+        message.append("]");
 
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de seriale in mod descrescator dupa numarul de vizionari
+     * ale acestora, iar apoi descrescator dupa nume.
+     * @param showList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" seriale ce se doresc afisate
+     */
     public String descViews(final ArrayList<MySerialInput> showList, final int number) {
 
-        int j, k;
-        MySerialInput aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         showList.sort((v1, v2) -> {
-            if (v1.noViews == v2.noViews) {
+            if (v1.getNoViews() == v2.getNoViews()) {
                 return v2.getTitle().compareTo(v1.getTitle());
             } else {
-                return Double.compare(v2.noViews, v1.noViews);
+                return Double.compare(v2.getNoViews(), v1.getNoViews());
             }
         });
 
-//        Collections.sort(showList, new Comparator<MySerialInput>() {
-//            public int compare(final MySerialInput v1, final MySerialInput v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(showList, Comparator.comparing(MySerialInput::getTitle));
-//        Collections.reverse(showList);
-//
-//        for (j = 0; j < showList.size() - 1; j++) {
-//            for (k = j + 1; k < showList.size(); k++) {
-//                if (showList.get(j).noViews < showList.get(k).noViews) {
-//                    aux = new MySerialInput(showList.get(j));
-//                    showList.set(j, showList.get(k));
-//                    showList.set(k, aux);
-//                }
-//            }
-//        }
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < showList.size(); end++) {
-            if(showList.get(end).noViews == 0) {
+            if (showList.get(end).getNoViews() == 0) {
                 break;
             }
         }
 
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < end && count != 0) {
-            if (showList.get(j).noViews != 0d) {
-                message.append(showList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (showList.get(j).getNoViews() != 0d) {
+                message.append(showList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -497,6 +418,5 @@ public class QueryShows {
 
         return message.toString();
     }
-
 
 }

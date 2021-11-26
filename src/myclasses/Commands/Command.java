@@ -6,8 +6,21 @@ import myclasses.MyShowInput;
 
 import java.util.ArrayList;
 
+
+
 public class Command {
 
+    /**
+     * Metoda ce implementeaza comanda "favorite"
+     * * Se verifica daca titlul pentru care se face adaugarea in lista de favorite a utilizatorului
+     * este al unui film sau al unui serial pentru a fi cautat in lista potrivita, apoi se
+     * apeleaza metoda utilizatorului de a adauga la favorite.
+     * @param users - lista utilizatorilor din database
+     * @param movies - lista filmelor din database
+     * @param serials - lista serialelor din database
+     * @param title - titlul videoclipului ce se doreste adaugat la favorite
+     * @param contor - pozitia in lista de utilizatori a utilizatorului pentru care se face comanda
+     */
     public String favorite(final ArrayList<MyUser> users,
                            final int contor, final String title,
                            final ArrayList<MyMovie> movies,
@@ -60,6 +73,22 @@ public class Command {
         }
     }
 
+
+    /**
+     * Metoda ce implementeaza comanda "view"
+     * Se verifica daca videoclipul ce doreste a fi vizionat este serial sau film, apelandu-se,
+     * mai apoi, metoda utilizatorului de a viziona un clip.
+     * @param users
+     * lista utilizatorilor din database
+     * @param movies
+     * lista filmelor din database
+     * @param serials
+     * lista serialelor din database
+     * @param title
+     * titlul videoclipului ce se doreste a fi vizionat
+     * @param contor
+     * pozitia in lista de utilizatori a utilizatorului pentru care se face comanda
+     */
     public String view(final ArrayList<MyUser> users,
                        final int contor, final String title,
                        final ArrayList<MyMovie> movies,
@@ -78,14 +107,35 @@ public class Command {
                 show = serials.get(j);
             }
         }
-        // Am vizionat o data/inca o data si am salvat in "nr" numarul de vizionari
+
         int nr = users.get(contor).view(title, show);
         message = "success -> " + title + " was viewed with total views of " + nr;
 
         return message;
     }
 
-
+    /**
+     * Metoda ce implementeaza comanda "rating"
+     * Se verifica daca videoclipul este film sau serial, iar daca nu a fost nici vizionat
+     * si nici nu i-a fost data o nota pana acum, se realizeaza comanda, apelandu-se
+     * metoda utilizatorului de a da o nota unui film/serial.
+     * @param users
+     * lista utilizatorilor din database
+     * @param movies
+     * lista filmelor din database
+     * @param serials
+     * lista serialelor din database
+     * @param title
+     * titlul videoclipului ce se doreste a fi vizionat
+     * @param contor
+     * pozitia in lista de utilizatori a utilizatorului pentru care se face comanda
+     * @param seasonNumber
+     * numarul sezonului pentru care se ofera rating
+     * @param name
+     * string ce reprezinta numele de utilizator
+     * @param grade
+     * nota ce ii este data unui videoclip
+     */
     public String rating(final ArrayList<MyUser> users,
                          final int contor, final String title,
                          final String name, final Double grade,
@@ -96,7 +146,7 @@ public class Command {
         int j;
 
         for (j = 0; j < movies.size(); j++) {
-            if (movies.get(j).title.equals(title)) { //Asta inseamna ca titlul este al unui film.
+            if (movies.get(j).getTitle().equals(title)) {
 
                 if (users.get(contor).isRated(title)) {
                     message = "error -> " + title + " has been already rated";
@@ -107,14 +157,14 @@ public class Command {
                     message = "error -> " + title + " is not seen";
                     return message;
                 } else {
-                    users.get(contor).rateMovie(grade, movies.get(j));    //Am dat o nota filmului
+                    users.get(contor).rateMovie(grade, movies.get(j));
                     message = "success -> " + title + " was rated with " + grade + " by " + name;
                     return message;
                 }
             }
         }
         for (j = 0; j < serials.size(); j++) {
-            if (serials.get(j).title.equals(title)) {//Asta inseamna ca titlul este al unui serial.
+            if (serials.get(j).getTitle().equals(title)) {
 
                 if (users.get(contor).isRated(title + seasonNumber)) {
                     message = "error -> " + title + " has been already rated";
@@ -134,6 +184,5 @@ public class Command {
         }
         return message;
     }
-
 
 }

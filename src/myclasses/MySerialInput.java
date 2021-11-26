@@ -7,83 +7,136 @@ import java.util.ArrayList;
 
 public class MySerialInput extends MyShowInput {
 
-    public int numberOfSeasons;
-    public ArrayList<Season> seasons;
-    public Double ratingSerial = 0d; // Media aritmetica a tuturor mediilor sezoanelor
-    public int serialDuration;
+    private int numberOfSeasons;
+    private ArrayList<Season> seasons;
+    private Double ratingSerial = 0d;
+    private int serialDuration;
 
+    /**
+     * Copy-Constructor
+     * @param serial
+     * serial de tip SerialInputData (clasa din scheletul temei)
+     */
     public MySerialInput(final SerialInputData serial) {
-        this.title = serial.getTitle();
-        this.year = serial.getYear();
-        this.cast = serial.getCast();
-        this.genres = serial.getGenres();
-        this.numberOfSeasons = serial.getNumberSeason();
-        this.seasons = serial.getSeasons();
+
+        this.setTitle(serial.getTitle());
+        this.setYear(serial.getYear());
+        this.setCast(serial.getCast());
+        this.setGenres(serial.getGenres());
+        this.setNumberOfSeasons(serial.getNumberSeason());
+        this.setSeasons(serial.getSeasons());
     }
 
+    /**
+     * Copy-Constructor
+     * @param serial
+     * serial de tipul propriu creat
+     */
     public MySerialInput(final MySerialInput serial) {
-        this.title = serial.getTitle();
-        this.year = serial.getYear();
-        this.cast = serial.getCast();
-        this.genres = serial.getGenres();
-        this.numberOfSeasons = serial.getNumberSeason();
-        this.seasons = serial.getSeasons();
-        this.ratingSerial = serial.ratingSerial;
-        this.rating = serial.rating;
-        this.noViews = serial.noViews;
-        this.serialDuration = serial.getSerialDuration();
-        this.noFavorite = serial.noFavorite;
+
+        this.setTitle(serial.getTitle());
+        this.setYear(serial.getYear());
+        this.setCast(serial.getCast());
+        this.setGenres(serial.getGenres());
+        this.setNumberOfSeasons(serial.getNumberOfSeasons());
+        this.setSeasons(serial.getSeasons());
+        this.setRatingSerial(serial.getRatingSerial());
+        this.setRating(serial.getRating());
+        this.setNoViews(serial.getNoViews());
+        this.setSerialDuration(serial.getSerialDuration());
+        this.setNoFavorite(serial.getNoFavorite());
     }
 
+    /**
+     * Getter pentru campul numberOfSeasons.
+     */
+    public int getNumberOfSeasons() {
+        return numberOfSeasons;
+    }
+    /**
+     * Setter pentru campul numberOfSeasons.
+     */
+    public void setNumberOfSeasons(final int numberOfSeasons) {
+        this.numberOfSeasons = numberOfSeasons;
+    }
+
+    /**
+     * Setter pentru campul seasons.
+     */
+    public void setSeasons(final ArrayList<Season> seasons) {
+        this.seasons = seasons;
+    }
+
+    /**
+     * Getter pentru campul ratingSerial.
+     */
+    public Double getRatingSerial() {
+        return ratingSerial;
+    }
+
+    /**
+     * Setter pentru campul ratingSerial.
+     */
+    public void setRatingSerial(final Double ratingSerial) {
+        this.ratingSerial = ratingSerial;
+    }
+
+    /**
+     * Setter pentru campul serialDuration.
+     */
+    public void setSerialDuration(final int serialDuration) {
+        this.serialDuration = serialDuration;
+    }
+
+    /**
+     * Getter pentru campul numberOfSeasons.
+     */
     public int getNumberSeason() {
         return numberOfSeasons;
     }
 
+    /**
+     * Getter pentru campul seasons.
+     */
     public ArrayList<Season> getSeasons() {
         return seasons;
     }
 
+    /**
+     * Metoda care calculeaza durata unui intreg serial.
+     */
     public int getSerialDuration() {
         int duration = 0;
         for (Season i: seasons) {
-            duration = duration + i.getDuration(); //
+            duration = duration + i.getDuration();
         }
         serialDuration = duration;
         return serialDuration;
     }
 
+    /**
+     * Metoda care calculeaza ratingul final al intregului serial
+     */
     public Double getRating() {
-//        Double sumAllseasons = 0d;
-//        Double sumPerSeason = 0d;
-//        for (Season i : seasons) {
-//            sumPerSeason = 0d;
-//            if (i.getRatings().size() != 0) {
-//                for (int j = 0; j < i.getRatings().size(); j++) {
-//                    sumPerSeason = sumPerSeason + i.getRatings().get(j);
-//                }
-//                sumPerSeason = sumPerSeason / i.getRatings().size();
-//                sumAllseasons = sumAllseasons + sumPerSeason;
-//            }
-//        }
-//        sumAllseasons = sumAllseasons / numberOfSeasons;
-//        rating = sumAllseasons;
-//        return rating;
-
         Double sumAllseasons = 0d;
         Double sumPerSeason = 0d;
         for (Season season : seasons) {
             if (season.getRatings().size() != 0) {
-               for(Double rating : season.getRatings()) {
+               for (Double rating : season.getRatings()) {
                    sumPerSeason = sumPerSeason + rating / season.getRatings().size();
                }
                sumAllseasons = sumAllseasons + sumPerSeason / numberOfSeasons;
             }
         }
-        rating = sumAllseasons;
-        ratingSerial = rating;
-        return rating;
+        setRating(sumAllseasons);
+        ratingSerial = sumAllseasons;
+
+        return ratingSerial;
     }
 
+    /**
+     * Metoda toString.
+     */
     @Override
     public String toString() {
         return "SerialInputData{" + " title= "

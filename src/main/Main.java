@@ -95,8 +95,8 @@ public final class Main {
         ArrayList<MySerialInput> serials = readdata.readSerials(input);
         ArrayList<MyUser> users = readdata.readUsers(input);
 
-        readdata.set_Views_And_Favorites_Movies(movies, users);
-        readdata.set_Views_And_Favorites_Serials(serials, users);
+        readdata.setViewsAndFavoritesMovies(movies, users);
+        readdata.setViewsAndFavoritesSerials(serials, users);
 
 
         //PARCURG LISTA DE ACTIUNI
@@ -109,7 +109,7 @@ public final class Main {
                 String name = i.getUsername();
                 int contor;
                 for (contor = 0; contor < users.size(); contor++) {
-                    if (users.get(contor).username.equals(name)) {
+                    if (users.get(contor).getUsername().equals(name)) {
                         break;
                     }
                 }
@@ -153,17 +153,8 @@ public final class Main {
 
                     QueryMovies queryMovies = new QueryMovies();
 
-//                    for(MyMovie p : movies) {
-//                        System.out.print(p.getTitle()+ " ");
-//                    }
-//                    System.out.println();
-
                     ArrayList<MyMovie> movieList;
                     movieList = queryMovies.initializeMovies(genre, year, movies);
-//                    for(MyMovie p : movieList) {
-//                        System.out.print(p.getTitle()+ " ");
-//                    }
-//                    System.out.println();
 
                     if (movieList.size() == 0) {
                         message = "Query result: []";
@@ -263,18 +254,18 @@ public final class Main {
                     ArrayList<MyUser> userList = new ArrayList<MyUser>();
                     QueryUsers queryUsers = new QueryUsers();
 
-                    queryUsers.InitializeUsersList(users, userList);
+                    queryUsers.initializeUserslist(users, userList);
 
                     if (userList.size() == 0) {
                         message = "Query result: []";
                     } else {
                         if (sortType.equals("asc")) {
-                            message = queryUsers.AscSortByRatingsGiven(userList, number);
+                            message = queryUsers.ascRatingsgiven(userList, number);
 
                         }
 
                         if (sortType.equals("desc")) {
-                            message = queryUsers.DescSortByRatingsGiven(userList, number);
+                            message = queryUsers.descRatingsgiven(userList, number);
                         }
 
                     }
@@ -326,6 +317,7 @@ public final class Main {
                 }
             }
 
+            // RECOMMENDATIONS
             if (i.getActionType().equals("recommendation")) {
 
                 String genre = i.getGenre();
@@ -334,23 +326,27 @@ public final class Main {
                 Recommendation recommendation = new Recommendation();
 
                 if (i.getType().equals("standard")) {
-                    message = recommendation.Standard(users, username, movies, serials);
+                    message = recommendation.recommendationStandard(users, username,
+                            movies, serials);
                 }
 
                 if (i.getType().equals("best_unseen")) {
-                    message = recommendation.BestUnseen(users, username, movies, serials);
+                    message = recommendation.bestUnseen(users, username, movies, serials);
                 }
 
                 if (i.getType().equals("search")) {
-                    message = recommendation.recommendationSearch(users, genre, username, movies, serials);
+                    message = recommendation.recommendationSearch(users, genre,
+                            username, movies, serials);
                 }
 
                 if (i.getType().equals("favorite")) {
-                    message = recommendation.recommendationFavorite(users, username, movies, serials);
+                    message = recommendation.recommendationFavorite(users, username,
+                            movies, serials);
                 }
 
                 if (i.getType().equals("popular")) {
-                    message = recommendation.Popular(users, username, movies, serials);
+                    message = recommendation.recommendationPopular(users, username,
+                            movies, serials);
                 }
 
             }
@@ -359,6 +355,5 @@ public final class Main {
             arrayResult.add(obj);
         }
         fileWriter.closeJSON(arrayResult);
-
     }
 }

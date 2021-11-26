@@ -1,54 +1,40 @@
 package myclasses.Query;
 
 import myclasses.MyMovie;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class QueryMovies {
 
+    /**
+     * Metoda care initializeaza lista de filme care urmeaza a fi sortata ulterior
+     * Se face filtrarea, fiind adaugate in lista noua doar filmele care au anul si genul cerut,
+     * in cazul in care este specificat unul anume.
+     * @param movies
+     * lista de filme din database
+     * @param genre
+     * genul filmului din database cu care se va face filtrarea
+     * @param year
+     * anul fimului din database cu care se va face filtrarea
+     */
     public ArrayList<MyMovie> initializeMovies(final List<String> genre,
                                                final List<String> year,
                                                final ArrayList<MyMovie> movies) {
 
 
-//        if(year == null) {
-//            System.out.println("year: null");
-//        } else {
-//            System.out.println("year: " + year.get(0));
-//        }
-//
-//        if(genre == null) {
-//            System.out.println("genre: null\n");
-//        } else {
-//            for(String m : genre) {
-//                System.out.print("genres: " + m);
-//            }
-//            System.out.println("\n");
-//        }
-
         ArrayList<MyMovie> movieList = new ArrayList<MyMovie>();
-
-//        System.out.println(year + " " +year.size());
-//        System.out.println(genre + " " + genre.size());
-
-
         int j, k, ok;
 
-        if((genre.get(0) == null) && (year.get(0) == null)) {
-            System.out.println("Am intrat pe genre si year == null");
+        if ((genre.get(0) == null) && (year.get(0) == null)) {
             for (j = 0; j < movies.size(); j++) {
                 movieList.add(movies.get(j));
             }
         }
 
-        // DACA GENRE SI YEAR SUNT DIFERITE DE NULL
         if ((genre.get(0) != null) && (year.get(0) != null)) {
             for (j = 0; j < movies.size(); j++) {
                 ok = 0;
-                if (String.valueOf(movies.get(j).year).equals(year.get(0))) {
+                if (String.valueOf(movies.get(j).getYear()).equals(year.get(0))) {
                     for (k = 0; k < movies.get(j).getGenres().size(); k++) {
                         if (movies.get(j).getGenres().get(k).equals(genre.get(0))) {
                             ok = 1;
@@ -61,46 +47,42 @@ public class QueryMovies {
             }
         }
 
-            if ((genre.get(0) == null) && (year.get(0) != null)) {
-                System.out.println("Am intrat pe genre == null si year != null");
-                for (j = 0; j < movies.size(); j++) {
-                    if (String.valueOf(movies.get(j).year).equals(year.get(0))) {
-                        movieList.add(movies.get(j));
-                    }
+        if ((genre.get(0) == null) && (year.get(0) != null)) {
+            for (j = 0; j < movies.size(); j++) {
+                if (String.valueOf(movies.get(j).getYear()).equals(year.get(0))) {
+                    movieList.add(movies.get(j));
                 }
             }
+        }
 
-                if ((genre.get(0) != null) && (year.get(0) == null)) {
-                    for (j = 0; j < movies.size(); j++) {
-                        ok = 0;
-
-                        for (k = 0; k < movies.get(j).getGenres().size(); k++) {
-                            if (movies.get(j).getGenres().get(k).equals(genre.get(0))) {
-                                ok = 1;
-                            }
-                        }
-                        if (ok == 1) {
-                            movieList.add(movies.get(j));
-                        }
+        if ((genre.get(0) != null) && (year.get(0) == null)) {
+            for (j = 0; j < movies.size(); j++) {
+                ok = 0;
+                for (k = 0; k < movies.get(j).getGenres().size(); k++) {
+                    if (movies.get(j).getGenres().get(k).equals(genre.get(0))) {
+                        ok = 1;
                     }
                 }
-
-
-
-
-
-//        for(MyMovie l : movieList) {
-//            System.out.print(l.getTitle() + " ");
-//        }
-//        System.out.println("\n");
+                if (ok == 1) {
+                    movieList.add(movies.get(j));
+                }
+            }
+        }
 
         return movieList;
     }
 
+    /**
+     * Metoda care compara lista de filme in mod crescator dupa ratingul acestora,
+     * iar apoi crescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String ascRating(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -112,30 +94,13 @@ public class QueryMovies {
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (Double.compare(movieList.get(j).ratingMovie,
-//                        movieList.get(k).ratingMovie) > 0) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < movieList.size() && count != 0) {
-            if (movieList.get(j).ratingMovie != 0d) {
-                message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getRatingMovie() != 0d) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != movieList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -149,10 +114,17 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod crescator dupa durata acestora,
+     * iar apoi crescator dupa nume
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String ascLongest(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
 
         movieList.sort((v1, v2) -> {
@@ -163,31 +135,14 @@ public class QueryMovies {
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).duration > movieList.get(k).duration) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
-
         message = new StringBuilder("Query result: [");
+
         for (j = 0; j < movieList.size(); j++) {
-            if (j == (number)) { ///!!!!
+            if (j == (number)) {
                 break;
             }
-            message.append(movieList.get(j).title);
-            if ((j != movieList.size() - 1) && (j != (number - 1))) { //  AICI!!!!!
+            message.append(movieList.get(j).getTitle());
+            if ((j != movieList.size() - 1) && (j != (number - 1))) {
                 message.append(", ");
             }
         }
@@ -196,44 +151,35 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod crescator dupa numarul de favorite
+     * ale acestora, iar apoi crescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String ascFavorite(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         movieList.sort((v1, v2) -> {
-            if (v1.noFavorite == v2.noFavorite) {
+            if (v1.getNoFavorite() == v2.getNoFavorite()) {
                 return v1.getTitle().compareTo(v2.getTitle());
             } else {
-                return Integer.compare(v1.noFavorite, v2.noFavorite);
+                return Integer.compare(v1.getNoFavorite(), v2.getNoFavorite());
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).noFavorite > movieList.get(k).noFavorite) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < movieList.size() && count != 0) {
-            if (movieList.get(j).noFavorite != 0) {
-                message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getNoFavorite() != 0) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != movieList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -247,45 +193,35 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod crescator dupa numarul de vizionari
+     * ale acestora, iar apoi crescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String ascViews(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         movieList.sort((v1, v2) -> {
-            if (v1.noViews == v2.noViews) {
+            if (v1.getNoViews() == v2.getNoViews()) {
                 return v1.getTitle().compareTo(v2.getTitle());
             } else {
-                return Integer.compare(v1.noViews, v2.noViews);
+                return Integer.compare(v1.getNoViews(), v2.getNoViews());
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).noViews > movieList.get(k).noViews) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
-
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < movieList.size() && count != 0) {
-            if (movieList.get(j).noViews != 0) {
-                message.append(movieList.get(j).title);
-                if ((j != movieList.size() - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getNoViews() != 0) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != movieList.size() - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -299,10 +235,17 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod descrescator dupa ratingul acestora,
+     * iar apoi descrescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String descRating(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
@@ -314,29 +257,9 @@ public class QueryMovies {
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//        Collections.reverse(movieList);
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (Double.compare(movieList.get(j).ratingMovie,
-//                        movieList.get(k).ratingMovie) < 0) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < movieList.size(); end++) {
-            if(movieList.get(end).ratingMovie == 0d) {
+            if (movieList.get(end).getRatingMovie() == 0d) {
                 break;
             }
         }
@@ -344,9 +267,9 @@ public class QueryMovies {
         message = new StringBuilder("Query result: [");
         j = 0;
         while (j < end && count != 0) {
-            if (movieList.get(j).ratingMovie != 0d) {
-                message.append(movieList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getRatingMovie() != 0d) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -360,10 +283,17 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod descrescator dupa durata acestora,
+     * iar apoi descrescator dupa nume
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String descLongest(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
 
         movieList.sort((v1, v2) -> {
@@ -374,31 +304,14 @@ public class QueryMovies {
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//        Collections.reverse(movieList);
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).duration < movieList.get(k).duration) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
         message = new StringBuilder("Query result: [");
+
         for (j = 0; j < movieList.size(); j++) {
-            if (j == (number - 1)) {
+            if (j == (number)) {
                 break;
             }
-            message.append(movieList.get(j).title);
-            if ((j != movieList.size() - 1) && (j != (number - 1))) { //  AICI!!!!!
+            message.append(movieList.get(j).getTitle());
+            if ((j != movieList.size() - 1) && (j != (number - 1))) {
                 message.append(", ");
             }
         }
@@ -407,54 +320,42 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod descrescator dupa numarul de favorite
+     * ale acestora, iar apoi descrescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String descFavorite(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         movieList.sort((v1, v2) -> {
-            if (v1.noFavorite == v2.noFavorite) {
+            if (v1.getNoFavorite() == v2.getNoFavorite()) {
                 return v2.getTitle().compareTo(v1.getTitle());
             } else {
-                return Integer.compare(v2.noFavorite, v1.noFavorite);
+                return Integer.compare(v2.getNoFavorite(), v1.getNoFavorite());
             }
         });
 
-
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//        Collections.reverse(movieList);
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).noFavorite < movieList.get(k).noFavorite) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < movieList.size(); end++) {
-            if(movieList.get(end).noFavorite == 0) {
+            if (movieList.get(end).getNoFavorite() == 0) {
                 break;
             }
         }
 
         message = new StringBuilder("Query result: [");
+
         j = 0;
         while (j < end && count != 0) {
-            if (movieList.get(j).noFavorite != 0) {
-                message.append(movieList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getNoFavorite() != 0) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -468,43 +369,31 @@ public class QueryMovies {
         return message.toString();
     }
 
+    /**
+     * Metoda care compara lista de filme in mod descrescator dupa numarul de vizionari
+     * ale acestora, iar apoi descrescator dupa nume.
+     * @param movieList
+     * lista ce va fi sortata
+     * @param number
+     * primele "number" filme ce se doresc afisate
+     */
     public String descViews(final ArrayList<MyMovie> movieList, final int number) {
 
-        int j, k;
-        MyMovie aux;
+        int j;
         StringBuilder message;
         int count = number;
 
         movieList.sort((v1, v2) -> {
-            if (v1.noViews == v2.noViews) {
+            if (v1.getNoViews() == v2.getNoViews()) {
                 return v2.getTitle().compareTo(v1.getTitle());
             } else {
-                return Integer.compare(v2.noViews, v1.noViews);
+                return Integer.compare(v2.getNoViews(), v1.getNoViews());
             }
         });
 
-//        Collections.sort(movieList, new Comparator<MyMovie>() {
-//            public int compare(final MyMovie v1, final MyMovie v2) {
-//                return v1.getTitle().compareTo(v2.getTitle());
-//            }
-//        });
-//
-//        Collections.sort(movieList, Comparator.comparing(MyMovie::getTitle));
-//        Collections.reverse(movieList);
-//
-//        for (j = 0; j < movieList.size() - 1; j++) {
-//            for (k = j + 1; k < movieList.size(); k++) {
-//                if (movieList.get(j).noViews < movieList.get(k).noViews) {
-//                    aux = new MyMovie(movieList.get(j));
-//                    movieList.set(j, movieList.get(k));
-//                    movieList.set(k, aux);
-//                }
-//            }
-//        }
-
-        int end; //!!!!!!!!!!!!!!!!!!!
+        int end;
         for (end = 0; end < movieList.size(); end++) {
-            if(movieList.get(end).noViews == 0) {
+            if (movieList.get(end).getNoViews() == 0) {
                 break;
             }
         }
@@ -512,9 +401,9 @@ public class QueryMovies {
         message = new StringBuilder("Query result: [");
         j = 0;
         while (j < end && count != 0) {
-            if (movieList.get(j).noViews != 0) {
-                message.append(movieList.get(j).title);
-                if ((j != end - 1) && (count > 1)) { //  AICI!!!!!
+            if (movieList.get(j).getNoViews() != 0) {
+                message.append(movieList.get(j).getTitle());
+                if ((j != end - 1) && (count > 1)) {
                     message.append(", ");
                 }
                 j++;
@@ -524,13 +413,10 @@ public class QueryMovies {
             }
         }
 
-//        message = new StringBuilder(message.substring(0, message.length() - 1));
-//        message = new StringBuilder(message.substring(0, message.length() - 1));
         message.append("]");
 
         return message.toString();
     }
-
 
 }
 
